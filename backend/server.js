@@ -18,6 +18,9 @@ connection.once('open', () => {
 	console.log("MongoDB database connection established successfully");
 })
 
+const reviewsRouter = require('./routes/listingsAndReviews');
+app.use(`${'/listingsAndReviews'}`, reviewsRouter);
+
 app.listen(port, () => {
 	console.log(`Server is running on port: ${port}`);
 });
