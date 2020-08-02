@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import './Review.scss';
 import UserIcon from '../../assets/img/user.svg';
+import moment from "moment";
 
 import { CommentInterface } from "../../constants/comment.interface";
 
@@ -10,6 +11,7 @@ interface Props {
 
 const Review: FC<Props> = ({review}) => {
   const {reviewer_name, date, comments} = review;
+  const dateFormatted = moment(date).format('LL');
 
   return <div className='review-item'>
 	<div className="review-item-header">
@@ -21,7 +23,7 @@ const Review: FC<Props> = ({review}) => {
 		  {reviewer_name}
 		</div>
 		<div className="subtitle">
-		  {date}
+		  {dateFormatted}
 		</div>
 	  </div>
 	</div>
