@@ -12,8 +12,9 @@ import LocationIcon from '../../assets/img/location.svg';
 
 import PriceBlock from "../PriceBlock/PriceBlock";
 import ReviewScore from "../ReviewScore/ReviewScore";
+import Review from "../Review/Review";
 
-import { ScoreInterface } from "../../pages/score.interface";
+import { ScoreInterface } from "../../constants/score.interface";
 
 interface Props {
   review: any
@@ -28,10 +29,7 @@ const ReviewItem: FC<Props> = ({review}) => {
 	}
   ];
 
-  // console.log(review.review_scores);
-
   if (review.review_scores) {
-
 	const {review_scores_accuracy, review_scores_cleanliness, review_scores_communication, review_scores_location} = review?.review_scores;
 	//@ts-ignore
 	reviewScore = [
@@ -56,6 +54,14 @@ const ReviewItem: FC<Props> = ({review}) => {
 		value: review_scores_location
 	  }
 	]
+  }
+
+  const renderSlider = () => {
+	if (review.reviews) {
+	  return review.reviews.map((item:any) => {
+	    return <Review key={item._id} review={item}/>
+	  })
+	} else return <p>no reviews</p>
   }
 
   return <div className='review'>
@@ -132,8 +138,19 @@ const ReviewItem: FC<Props> = ({review}) => {
 	  <ReviewScore scores={reviewScore}/>
 	  <div className="user-review">
 		<div className="user-review-header">
-		  header
+		  <div className="count">
+			<p>
+			  {review.number_of_reviews} reviews
+			</p>
+		  </div>
+		  <div className="review-value">
+			{review.review_scores?.review_scores_value}/10
+		  </div>
 		</div>
+		<div className="user-review-slider">
+		  {renderSlider()}
+		</div>
+
 	  </div>
 	</div>
   </div>

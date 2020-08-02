@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import './ReviewScore.scss';
 
-import { ScoreInterface } from "../../pages/score.interface";
+import { ScoreInterface } from "../../constants/score.interface";
 
 interface Props {
   scores: [ScoreInterface];
