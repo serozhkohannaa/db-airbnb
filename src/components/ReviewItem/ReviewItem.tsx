@@ -56,6 +56,22 @@ const ReviewItem: FC<Props> = ({review}) => {
 			<div className="policy-text">
 			  Cancelation policy: <span>{review.cancellation_policy}</span>
 			</div>
+			<div className="desc-item">
+			  <div className="subtitle">
+				<p>Summary</p>
+			  </div>
+			  <div className="desc-text">
+				{review.summary}
+			  </div>
+			</div>
+			<div className="desc-item">
+			  <div className="subtitle">
+				<p>Location</p>
+			  </div>
+			  <div className="desc-text">
+				{review.address.street}
+			  </div>
+			</div>
 		  </div>
 		  <div className="price-block">
 			price
