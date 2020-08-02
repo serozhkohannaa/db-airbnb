@@ -188,5 +188,9 @@
 
   &-bottom {
     display: flex;
+
+    .reviewScore {
+      max-width: 580px;
+    }
   }
 }

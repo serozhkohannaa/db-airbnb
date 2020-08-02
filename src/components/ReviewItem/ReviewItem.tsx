@@ -5,14 +5,59 @@ import BedIcon from '../../assets/img/bed.svg';
 import RoomIcon from '../../assets/img/room.svg';
 import GuestIcon from '../../assets/img/guest.svg';
 import NightIcon from '../../assets/img/night.svg';
+import AccurateIcon from '../../assets/img/accurate.svg';
+import CleanIcon from '../../assets/img/clean.svg';
+import ChatIcon from '../../assets/img/chat.svg';
+import LocationIcon from '../../assets/img/location.svg';
+
 import PriceBlock from "../PriceBlock/PriceBlock";
+import ReviewScore from "../ReviewScore/ReviewScore";
+
+import { ScoreInterface } from "../../pages/score.interface";
 
 interface Props {
   review: any
 }
 
 const ReviewItem: FC<Props> = ({review}) => {
-  console.log(review.images);
+  let reviewScore: [ScoreInterface] = [
+	{
+	  type: '',
+	  icon: '',
+	  value: 0
+	}
+  ];
+
+  // console.log(review.review_scores);
+
+  if (review.review_scores) {
+
+	const {review_scores_accuracy, review_scores_cleanliness, review_scores_communication, review_scores_location} = review?.review_scores;
+	//@ts-ignore
+	reviewScore = [
+	  {
+		type: 'Accurate',
+		icon: AccurateIcon,
+		value: review_scores_accuracy
+	  },
+	  {
+		type: 'Clean',
+		icon: CleanIcon,
+		value: review_scores_cleanliness
+	  },
+	  {
+		type: 'Communication',
+		icon: ChatIcon,
+		value: review_scores_communication
+	  },
+	  {
+		type: 'Location',
+		icon: LocationIcon,
+		value: review_scores_location
+	  }
+	]
+  }
+
   return <div className='review'>
 	<div className="review-top">
 	  <div className="img-wrapper">
@@ -84,7 +129,12 @@ const ReviewItem: FC<Props> = ({review}) => {
 	  </div>
 	</div>
 	<div className="review-bottom">
-
+	  <ReviewScore scores={reviewScore}/>
+	  <div className="user-review">
+		<div className="user-review-header">
+		  header
+		</div>
+	  </div>
 	</div>
   </div>
 }
