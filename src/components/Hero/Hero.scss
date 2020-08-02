@@ -1,0 +1,27 @@
+@import 'src/assets/variables';
+
+.hero {
+  background: $light;
+  width: 100%;
+  padding: 40px 0 60px;
+  margin-bottom: 20px;
+
+  .container {
+    background: url("../../assets/img/blur-lg.png") no-repeat;
+    background-size: contain;
+    display: flex;
+  }
+
+  &-text {
+    width: 50%;
+
+    h1 {
+      font-family: $Montserrat;
+      font-weight: 800;
+      font-size: 64px;
+      line-height: 1.2;
+      letter-spacing: $ls-md;
+      max-width: 500px;
+    }
+  }
+}
