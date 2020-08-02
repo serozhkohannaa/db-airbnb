@@ -177,9 +177,10 @@
           }
         }
 
-        .price-block {
-          background: pink;
+        .priceBlock {
           flex-grow: 1;
+          width: 220px;
+
         }
       }
     }

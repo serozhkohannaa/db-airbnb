@@ -5,6 +5,7 @@ import BedIcon from '../../assets/img/bed.svg';
 import RoomIcon from '../../assets/img/room.svg';
 import GuestIcon from '../../assets/img/guest.svg';
 import NightIcon from '../../assets/img/night.svg';
+import PriceBlock from "../PriceBlock/PriceBlock";
 
 interface Props {
   review: any
@@ -78,9 +79,7 @@ const ReviewItem: FC<Props> = ({review}) => {
 			  </div>
 			</div>
 		  </div>
-		  <div className="price-block">
-			price
-		  </div>
+		  <PriceBlock price={review.price} deposit={review.security_deposit} fee={review.cleaning_fee}/>
 		</div>
 	  </div>
 	</div>
