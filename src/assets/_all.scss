@@ -1,5 +1,33 @@
 @import "variables";
+@import "reset";
 
-$tablet: 768px;
-$laptop: 1024px;
-$desktop: 1440px;
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+li {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button, input, select {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: inherit;
+  border-radius: 0;
+}
+
+button {
+  &:disabled {
+    opacity: .5;
+    pointer-events: none;
+  }
+}

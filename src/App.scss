@@ -3,6 +3,8 @@
 html, body {
   line-height: 1.5;
   font-size: 14px;
+  font-family: $DMSans;
+  font-weight: 400;
 }
 
 main {
@@ -21,7 +23,6 @@ main {
     flex-grow: 1;
     flex-shrink: 0;
     flex-basis: auto;
-    padding-top: 65px;
     display: flex;
     justify-content: center;
   }
@@ -42,3 +43,4 @@ main {
     max-width: 1140px;
   }
 }
+
