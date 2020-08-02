@@ -87,14 +87,31 @@
       flex-direction: column;
       flex-grow: 1;
       padding: 10px 10px 10px 0;
+      position: relative;
+
+      .type {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+
+        .button {
+          min-width: 130px;
+          padding: 0 10px;
+        }
+      }
 
       .title {
         margin-bottom: 10px;
+        max-width: 480px;
 
         h3 {
           color: $deep-blue;
           font-size: 24px;
           letter-spacing: $ls-sm;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          width: 100%;
+          overflow: hidden;
         }
       }
 
@@ -121,11 +138,14 @@
 
       .content-body {
         display: flex;
+        height: 100%;
 
         .description-block {
           max-width: 440px;
           width: 100%;
           margin-right: 15px;
+          display: flex;
+          flex-direction: column;
 
           .policy-text {
             margin-bottom: 10px;
@@ -152,6 +172,7 @@
 
             &:last-child {
               margin-bottom: 0;
+              margin-top: auto;
             }
           }
         }

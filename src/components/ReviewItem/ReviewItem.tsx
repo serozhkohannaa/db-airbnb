@@ -30,6 +30,11 @@ const ReviewItem: FC<Props> = ({review}) => {
 				</div>}
 	  </div>
 	  <div className="info-wrapper">
+		<div className="type">
+		  <button className="button primary is-small">
+			{review.property_type}
+		  </button>
+		</div>
 		<div className="title">
 		  <h3>{review.name}</h3>
 		</div>
