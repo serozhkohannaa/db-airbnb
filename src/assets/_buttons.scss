@@ -1,0 +1,23 @@
+.button {
+  border-radius: $border-radius-sm;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 500;
+  font-family: $DMSans;
+  letter-spacing: $ls-sm;
+
+  &.is-small {
+    height: 35px;
+  }
+
+  &.primary {
+    background: $deep-blue;
+    color: #fff;
+  }
+
+  &.secondary {
+    background: $pink;
+    color: $deep-blue;
+  }
+}
