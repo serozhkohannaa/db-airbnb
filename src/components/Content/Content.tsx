@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './Content.scss';
 import NavParams from "../NavParams/NavParams";
+import ReviewItem from "../ReviewItem/ReviewItem";
 import { getData } from "../../services/request";
 
 const Content = () => {
@@ -14,11 +15,9 @@ const Content = () => {
   const renderData = () => {
     if (data.length > 0) {
 	 return data.map((item: any, i) => {
-	   return <div key={i}>
-		 <p>{item.name}</p>
-		</div>
+	   return <ReviewItem key={i} review={item} />
 	  })
-	} else return <div>loading or absence</div>
+	} else return <div>loading or absence of data</div>
   }
 
   return <section className='content'>
