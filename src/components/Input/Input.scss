@@ -1,0 +1,27 @@
+@import 'src/assets/variables';
+
+.input-wrapper {
+  width: 200px;
+  height: 30px;
+  position: relative;
+
+  .input-field {
+    width: 100%;
+    height: 100%;
+    border-bottom: 1px solid $deep-blue;
+    padding: 0 5px 0 35px;
+    font-family: $DMSans;
+    font-size: 12px;
+    letter-spacing: $ls-sm;
+    color: $blue-light;
+  }
+
+  input::placeholder {
+    text-align: right;
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 5px;
+  }
+}

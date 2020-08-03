@@ -4,6 +4,7 @@
   margin-bottom: 75px;
   display: flex;
   align-items: center;
+  position: relative;
 
   .button {
     &.amount {
@@ -19,5 +20,12 @@
 
   .sortParams {
     margin-left: auto;
+  }
+
+  .input-component {
+    position: absolute;
+    width: 100%;
+    display: flex;
+    justify-content: center;
   }
 }

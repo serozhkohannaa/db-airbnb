@@ -22,6 +22,11 @@ const Content = () => {
 	  .then(data => setData(data));
   }
 
+  const searchRecord = (searchValue: string) => {
+	getData(`http://localhost:5000/listingsAndReviews/search/${searchValue}`)
+	  .then(data => setData(data));
+  }
+
   const renderData = () => {
 	if (data.length > 0) {
 	  return data.map((item: any, i) => {
@@ -31,7 +36,7 @@ const Content = () => {
   }
 
   return <section className='content'>
-	<NavParams setUpdate={updateList} setRefresh={refreshList} amount={data.length}/>
+	<NavParams setUpdate={updateList} setSearchRecord={searchRecord} setRefresh={refreshList} amount={data.length}/>
 	<div className="content-list">
 	  {renderData()}
 	</div>
