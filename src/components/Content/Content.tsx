@@ -6,7 +6,6 @@ import { getData } from "../../services/request";
 
 const Content = () => {
   const [data, setData] = useState([]);
-  const [isRefresh, setRefresh] = useState();
 
   useEffect(() => {
 	getData('http://localhost:5000/listingsAndReviews')
@@ -21,8 +20,6 @@ const Content = () => {
   const refreshList = () => {
 	getData('http://localhost:5000/listingsAndReviews')
 	  .then(data => setData(data));
-
-	setRefresh(true);
   }
 
   const renderData = () => {
