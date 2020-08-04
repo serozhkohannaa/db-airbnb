@@ -7,4 +7,12 @@
     display: flex;
     flex-direction: column;
   }
+
+  .filters-wrapper {
+    height: 0;
+
+    &.is-open {
+      height: 400px;
+    }
+  }
 }

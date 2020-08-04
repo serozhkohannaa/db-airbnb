@@ -17,6 +17,12 @@
       cursor: pointer;
       z-index: 100;
     }
+
+    &.open-btn {
+      position: absolute;
+      right: 0;
+      bottom: -20px;
+    }
   }
 
   .sortParams {
