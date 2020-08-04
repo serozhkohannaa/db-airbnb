@@ -1,3 +1,39 @@
+@import 'src/assets/variables';
+
 .navParams {
   margin-bottom: 75px;
+  display: flex;
+  align-items: center;
+  position: relative;
+
+  .button {
+    &.amount {
+      width: 180px;
+      letter-spacing: $ls-sm;
+      margin-right: 20px;
+    }
+    
+    &.refresh {
+      cursor: pointer;
+      z-index: 100;
+    }
+
+    &.open-btn {
+      position: absolute;
+      right: 0;
+      bottom: -20px;
+    }
+  }
+
+  .sortParams {
+    margin-left: auto;
+    z-index: 100;
+  }
+
+  .input-component {
+    position: absolute;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
 }

@@ -1,0 +1,1 @@
+export const SET_FILTERS_OPEN = 'SET_FILTERS_OPEN';

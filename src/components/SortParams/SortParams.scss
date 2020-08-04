@@ -1,0 +1,34 @@
+@import 'src/assets/variables';
+
+.sortParams {
+  display: flex;
+
+  .sort-item {
+    display: flex;
+    align-items: center;
+    margin-right: 30px;
+    color: $blue-light;
+    cursor: pointer;
+    font-weight: 500;
+
+    & * {
+      fill: $blue-light;
+    }
+
+    &.is-active {
+      color: $deep-blue;
+
+      & * {
+        fill: $deep-blue;
+      }
+    }
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    &-icon {
+      margin-right: 5px;
+    }
+  }
+}
