@@ -15,11 +15,13 @@
     
     &.refresh {
       cursor: pointer;
+      z-index: 100;
     }
   }
 
   .sortParams {
     margin-left: auto;
+    z-index: 100;
   }
 
   .input-component {
