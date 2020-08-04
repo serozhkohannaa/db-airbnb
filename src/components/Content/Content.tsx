@@ -34,6 +34,11 @@ const Content: FC<Props> = ({isOpen}) => {
 	  .then(data => setData(data));
   }
 
+  const updateFilter = (searchValue: string) => {
+	getData(`http://localhost:5000/listingsAndReviews/filter/${searchValue}`)
+	  .then(data => setData(data));
+  }
+
   const renderData = () => {
 	if (data.length > 0) {
 	  return data.map((item: any, i) => {
@@ -45,7 +50,7 @@ const Content: FC<Props> = ({isOpen}) => {
   return <section className='content'>
 	<NavParams setUpdate={updateList} setSearchRecord={searchRecord} setRefresh={refreshList} amount={data.length}/>
 	<div className={`filters-wrapper ${isOpen && 'is-open'}`}>
-	  <Filters/>
+	  <Filters setFilter={updateFilter}/>
 	</div>
 	<div className="content-list">
 	  {renderData()}

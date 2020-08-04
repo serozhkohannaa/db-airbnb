@@ -1,3 +1,22 @@
 .filters {
   width: 100%;
+  background: pink;
+  padding: 50px 10px;
+  display: flex;
+  position: relative;
+
+  .input {
+    .data-list {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+
+  .button {
+    position: absolute;
+    min-width: 120px;
+    bottom: 20px;
+    cursor: pointer;
+    right: 20px;
+  }
 }

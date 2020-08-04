@@ -1,3 +1,5 @@
+@import 'src/assets/variables';
+
 .content {
   display: flex;
   flex-direction: column;
@@ -10,9 +12,12 @@
 
   .filters-wrapper {
     height: 0;
+    transition: height $transition-speed-base;
+    overflow: hidden;
 
     &.is-open {
-      height: 400px;
+      height: 300px;
+      transition: height $transition-speed-base;
     }
   }
 }

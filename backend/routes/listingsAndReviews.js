@@ -25,4 +25,11 @@ router.route('/search/:name').get((req, res) => {
 		.catch(err => res.status(400).json('Error: ' + err));
 });
 
+router.route('/filter/:lt').get((req, res) => {
+	console.log(req.params)
+	ListingsAndReviews.find({ price : { $lt : req.params.lt}})
+		.then(review => res.json(review))
+		.catch(err => res.status(400).json('Error: ' + err));
+});
+
 module.exports = router;
