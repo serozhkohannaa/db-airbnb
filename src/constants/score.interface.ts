@@ -3,3 +3,8 @@ export interface ScoreInterface {
   icon: string;
   value: number;
 }
+
+export interface PriceRange {
+  min: number;
+  max: number;
+}

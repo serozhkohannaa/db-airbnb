@@ -3,26 +3,37 @@ import './Content.scss';
 import NavParams from "../NavParams/NavParams";
 import ReviewItem from "../ReviewItem/ReviewItem";
 import { getData } from "../../services/request";
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
+
+import { getTypes } from "../../action/actions";
 
 import Filters from "../Filters/Filters";
 
 interface Props {
   isOpen: boolean;
+  getTypes: any
 }
 
-const Content: FC<Props> = ({isOpen}) => {
+const Content: FC<Props> = ({isOpen, getTypes}) => {
   const [data, setData] = useState([]);
+  const [priceRange, setPriceRange] = useState({min: 0, max: 10000});
 
   useEffect(() => {
 	getData('http://localhost:5000/listingsAndReviews')
 	  .then(data => setData(data));
+	getData('http://localhost:5000/listingsAndReviews/sort/priceMin')
+	  .then(priceMin => setPriceRange(priceRange.min = priceMin));
+	getData('http://localhost:5000/listingsAndReviews/sort/priceMax')
+	  .then(priceMax => setPriceRange({...priceRange, max: priceMax}));
+
+	getTypes();
   }, [])
 
   const updateList = (type: string) => {
 	getData(`http://localhost:5000/listingsAndReviews/sort/${type}`)
 	  .then(data => setData(data));
   }
+
 
   const refreshList = () => {
 	getData('http://localhost:5000/listingsAndReviews')
@@ -31,6 +42,13 @@ const Content: FC<Props> = ({isOpen}) => {
 
   const searchRecord = (searchValue: string) => {
 	getData(`http://localhost:5000/listingsAndReviews/search/${searchValue}`)
+	  .then(data => setData(data));
+  }
+
+  const updateFilter = (params) => {
+	const {price, property_type} = params;
+
+	getData(`http://localhost:5000/listingsAndReviews/filter/${price}&${property_type}`,)
 	  .then(data => setData(data));
   }
 
@@ -45,7 +63,7 @@ const Content: FC<Props> = ({isOpen}) => {
   return <section className='content'>
 	<NavParams setUpdate={updateList} setSearchRecord={searchRecord} setRefresh={refreshList} amount={data.length}/>
 	<div className={`filters-wrapper ${isOpen && 'is-open'}`}>
-	  <Filters/>
+	  <Filters priceRange={priceRange} setFilter={updateFilter}/>
 	</div>
 	<div className="content-list">
 	  {renderData()}
@@ -55,8 +73,12 @@ const Content: FC<Props> = ({isOpen}) => {
 
 const mapStateToProps = ({application}) => {
   return {
-    isOpen: application.isOpen
+	isOpen: application.isOpen
   }
 }
 
-export default connect(mapStateToProps)(Content);
+const mapDispatchToProps = {
+  getTypes
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Content);

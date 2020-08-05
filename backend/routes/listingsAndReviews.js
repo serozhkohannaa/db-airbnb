@@ -19,10 +19,35 @@ router.route('/sort/price').get((req, res) => {
 		.catch(err => res.status(400).json('Error: ' + err));
 });
 
+router.route('/sort/priceMin').get((req, res) => {
+	ListingsAndReviews.findOne().sort({price: 1})
+		.then(review => res.json(review.price))
+		.catch(err => res.status(400).json('Error: ' + err));
+});
+
+router.route('/sort/priceMax').get((req, res) => {
+	ListingsAndReviews.findOne().sort({price: -1})
+		.then(review => res.json(review.price))
+		.catch(err => res.status(400).json('Error: ' + err));
+});
+
+router.route('/get/propertyTypes').get((req, res) => {
+	ListingsAndReviews.find({}, {property_type: 1})
+		.then(review => res.json(review))
+		.catch(err => res.status(400).json('Error: ' + err));
+});
+
 router.route('/search/:name').get((req, res) => {
 	ListingsAndReviews.find(req.params)
 		.then(review => res.json(review))
 		.catch(err => res.status(400).json('Error: ' + err));
 });
+
+router.route('/filter/:price&:property_type').get((req, res) => {
+	ListingsAndReviews.find({ price : { $lt : req.params.price}, property_type: req.params.property_type.split(',')})
+		.then(review => res.json(review))
+		.catch(err => res.status(400).json('Error: ' + err));
+});
+
 
 module.exports = router;

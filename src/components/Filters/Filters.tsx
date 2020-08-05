@@ -1,14 +1,84 @@
-import React from 'react';
+import React, { FC, FormEvent, useState } from 'react';
 import './Filters.scss';
+import { PriceRange } from "../../constants/score.interface";
+import { ParamsInterfaces } from "../../constants/params.interfaces";
+import { FiltersInterface } from "../../constants/filters.interface";
 
-const Filters = () => {
-  return <section className='filters'>
-	filter
-	filter
-	filter
-	filter
-	filter
-  </section>
+import { connect } from 'react-redux';
+
+interface Props {
+  priceValue?: HTMLInputElement | null;
+  typeValue?: HTMLInputElement | null;
+  setFilter: any;
+  priceRange: PriceRange;
+  propertyTypes: ParamsInterfaces;
 }
 
-export default Filters;
+const Filters: FC<Props> = ({priceValue, typeValue, setFilter, priceRange, propertyTypes}) => {
+  const [checkedValues, setChecked] = useState();
+  let filterParams: FiltersInterface = {};
+
+  const handleSubmit = (e: FormEvent) => {
+	e.preventDefault();
+
+	filterParams.price = priceValue?.value;
+	filterParams.property_type = checkedValues !== undefined ? checkedValues : propertyTypes;
+
+	setFilter(filterParams);
+  }
+
+  const handleTypeChange = (type: string) => (e: FormEvent) => {
+	if (checkedValues?.includes(type)) {
+	  setChecked(checkedValues.filter(item => item !== type));
+	} else {
+	  if (checkedValues) {
+		setChecked([...checkedValues, type]);
+	  } else {
+		setChecked([type])
+	  }
+	}
+  }
+
+  const renderInputs = () => {
+	if (propertyTypes) {
+	  // @ts-ignore
+	  return propertyTypes.map((item, i) => {
+		return <div key={i} className='input'>
+		  <input onChange={handleTypeChange(item)} ref={(input) => typeValue = input} id={`type${i}`} type="checkbox"/>
+		  <label htmlFor={`type${i}`}>{item}</label>
+		</div>
+	  })
+	}
+  }
+
+  return <form className='filters' onSubmit={handleSubmit}>
+	<div className="option option-price">
+	  <div className="title">
+		Price
+	  </div>
+	  <div className="input">
+		<input ref={(input) => priceValue = input} type="range" min={priceRange.min} max={priceRange.max} step={10}
+			   list="tickmarks"/>
+		<datalist id="tickmarks" className='data-list'>
+		  <option value={priceRange.min} label={priceRange.min?.toString()}>{priceRange.min}</option>
+		  <option value={priceRange.max} label={priceRange.max?.toString()}>{priceRange.max}</option>
+		</datalist>
+	  </div>
+	  <div className="option option-type">
+		<div className="title">Property type</div>
+		<div className="inputs-wrapper">
+		  {renderInputs()}
+		</div>
+	  </div>
+	</div>
+	<button className="button is-small primary">Apply</button>
+  </form>
+}
+
+const mapStateToProps = ({params}) => {
+  return {
+	propertyTypes: params.propertyTypes
+  }
+}
+
+export default connect(mapStateToProps)(Filters);

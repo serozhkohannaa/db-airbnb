@@ -1,8 +1,10 @@
 import { combineReducers } from "redux";
 import application from "./application";
+import params from "./params";
 
 const reducer = combineReducers({
-  application
+  application,
+  params
 })
 
 export default reducer;
