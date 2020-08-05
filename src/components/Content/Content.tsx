@@ -3,15 +3,18 @@ import './Content.scss';
 import NavParams from "../NavParams/NavParams";
 import ReviewItem from "../ReviewItem/ReviewItem";
 import { getData } from "../../services/request";
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
+
+import { getTypes } from "../../action/actions";
 
 import Filters from "../Filters/Filters";
 
 interface Props {
   isOpen: boolean;
+  getTypes: any
 }
 
-const Content: FC<Props> = ({isOpen}) => {
+const Content: FC<Props> = ({isOpen, getTypes}) => {
   const [data, setData] = useState([]);
   const [priceRange, setPriceRange] = useState({min: 0, max: 10000});
 
@@ -22,6 +25,8 @@ const Content: FC<Props> = ({isOpen}) => {
 	  .then(priceMin => setPriceRange(priceRange.min = priceMin));
 	getData('http://localhost:5000/listingsAndReviews/sort/priceMax')
 	  .then(priceMax => setPriceRange({...priceRange, max: priceMax}));
+
+	getTypes();
   }, [])
 
   const updateList = (type: string) => {
@@ -40,9 +45,11 @@ const Content: FC<Props> = ({isOpen}) => {
 	  .then(data => setData(data));
   }
 
-  const updateFilter = (searchValue: string) => {
-	getData(`http://localhost:5000/listingsAndReviews/filter/${searchValue}`)
-	  .then(data => setData(data));
+  const updateFilter = (params) => {
+	// getData(`http://localhost:5000/listingsAndReviews/filter/${searchValue}`)
+	//   .then(data => setData(data));
+
+
   }
 
   const renderData = () => {
@@ -70,4 +77,8 @@ const mapStateToProps = ({application}) => {
   }
 }
 
-export default connect(mapStateToProps)(Content);
+const mapDispatchToProps = {
+  getTypes
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Content);
