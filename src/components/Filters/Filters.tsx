@@ -1,12 +1,14 @@
 import React, { FC, FormEvent } from 'react';
 import './Filters.scss';
+import { PriceRange } from "../../constants/score.interface";
 
 interface Props {
   priceValue?: HTMLInputElement | null;
   setFilter: any;
+  priceRange: PriceRange;
 }
 
-const Filters: FC<Props> = ({priceValue, setFilter}) => {
+const Filters: FC<Props> = ({priceValue, setFilter, priceRange}) => {
 
   const handleSubmit = (e: FormEvent) => {
 	e.preventDefault();
@@ -20,10 +22,10 @@ const Filters: FC<Props> = ({priceValue, setFilter}) => {
 		Price
 	  </div>
 	  <div className="input">
-		<input ref={(input) => priceValue = input} type="range" min={10} max={100} step={10} list="tickmarks"/>
+		<input ref={(input) => priceValue = input} type="range" min={priceRange.min} max='20000' step={10} list="tickmarks"/>
 		<datalist id="tickmarks" className='data-list'>
-		  <option value="0" label="0%">0</option>
-		  <option value="100" label="100%">100</option>
+		  <option value={priceRange.min} label={priceRange.min?.toString()} >{priceRange.min}</option>
+		  <option value={priceRange.max} label={priceRange.max?.toString()} >{priceRange.max}</option>
 		</datalist>
 	  </div>
 	</div>

@@ -13,16 +13,22 @@ interface Props {
 
 const Content: FC<Props> = ({isOpen}) => {
   const [data, setData] = useState([]);
+  const [priceRange, setPriceRange] = useState({min: 0, max: 10000});
 
   useEffect(() => {
 	getData('http://localhost:5000/listingsAndReviews')
 	  .then(data => setData(data));
+	getData('http://localhost:5000/listingsAndReviews/sort/priceMin')
+	  .then(priceMin => setPriceRange(priceRange.min = priceMin));
+	getData('http://localhost:5000/listingsAndReviews/sort/priceMax')
+	  .then(priceMax => setPriceRange({...priceRange, max: priceMax}));
   }, [])
 
   const updateList = (type: string) => {
 	getData(`http://localhost:5000/listingsAndReviews/sort/${type}`)
 	  .then(data => setData(data));
   }
+
 
   const refreshList = () => {
 	getData('http://localhost:5000/listingsAndReviews')
@@ -50,7 +56,7 @@ const Content: FC<Props> = ({isOpen}) => {
   return <section className='content'>
 	<NavParams setUpdate={updateList} setSearchRecord={searchRecord} setRefresh={refreshList} amount={data.length}/>
 	<div className={`filters-wrapper ${isOpen && 'is-open'}`}>
-	  <Filters setFilter={updateFilter}/>
+	  <Filters priceRange={priceRange} setFilter={updateFilter}/>
 	</div>
 	<div className="content-list">
 	  {renderData()}
@@ -60,7 +66,7 @@ const Content: FC<Props> = ({isOpen}) => {
 
 const mapStateToProps = ({application}) => {
   return {
-    isOpen: application.isOpen
+	isOpen: application.isOpen
   }
 }
 
