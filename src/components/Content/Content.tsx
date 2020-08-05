@@ -46,10 +46,10 @@ const Content: FC<Props> = ({isOpen, getTypes}) => {
   }
 
   const updateFilter = (params) => {
-	// getData(`http://localhost:5000/listingsAndReviews/filter/${searchValue}`)
-	//   .then(data => setData(data));
+	const {price, property_type} = params;
 
-
+	getData(`http://localhost:5000/listingsAndReviews/filter/${price}&${property_type}`,)
+	  .then(data => setData(data));
   }
 
   const renderData = () => {

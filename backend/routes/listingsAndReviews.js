@@ -43,15 +43,8 @@ router.route('/search/:name').get((req, res) => {
 		.catch(err => res.status(400).json('Error: ' + err));
 });
 
-router.route('/filter/:lt').get((req, res) => {
-	ListingsAndReviews.find({ price : { $lt : req.params.lt}})
-		.then(review => res.json(review))
-		.catch(err => res.status(400).json('Error: ' + err));
-});
-
-router.route('/filter/propertyTypes').get((req, res) => {
-	console.log(req.params)
-	ListingsAndReviews.find()
+router.route('/filter/:price&:property_type').get((req, res) => {
+	ListingsAndReviews.find({ price : { $lt : req.params.price}, property_type: req.params.property_type.split(',')})
 		.then(review => res.json(review))
 		.catch(err => res.status(400).json('Error: ' + err));
 });

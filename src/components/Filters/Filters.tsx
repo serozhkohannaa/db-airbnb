@@ -16,17 +16,15 @@ interface Props {
 
 const Filters: FC<Props> = ({priceValue, typeValue, setFilter, priceRange, propertyTypes}) => {
   const [checkedValues, setChecked] = useState();
-  let searchParams: FiltersInterface;
+  let filterParams: FiltersInterface = {};
 
   const handleSubmit = (e: FormEvent) => {
 	e.preventDefault();
 
-	console.log(checkedValues);
+	filterParams.price = priceValue?.value;
+	filterParams.property_type = checkedValues !== undefined ? checkedValues : propertyTypes;
 
-	searchParams.price = priceValue?.value;
-	searchParams.property_type = checkedValues;
-
-	setFilter(priceValue?.value);
+	setFilter(filterParams);
   }
 
   const handleTypeChange = (type: string) => (e: FormEvent) => {
