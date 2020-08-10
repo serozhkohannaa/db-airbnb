@@ -19,6 +19,7 @@ interface Props {
 const Filters: FC<Props> = ({priceValue, typeValue, policyValue, setFilter, priceRange, propertyTypes, cancellation_policy}) => {
   const [checkedValues, setChecked] = useState();
   const [checkedPolicy, setCancellation] = useState();
+  const [isHighScored, setHighScored] = useState(false);
 
   let filterParams: FiltersInterface = {};
 
@@ -26,8 +27,9 @@ const Filters: FC<Props> = ({priceValue, typeValue, policyValue, setFilter, pric
 	e.preventDefault();
 
 	filterParams.price = priceValue?.value;
-	filterParams.property_type = checkedValues.length > 0 ? checkedValues : propertyTypes;
-	filterParams.cancellation_policy = checkedPolicy.length > 0 ? checkedPolicy : cancellation_policy;
+	filterParams.property_type = checkedValues?.length > 0 ? checkedValues : propertyTypes;
+	filterParams.cancellation_policy = checkedPolicy?.length > 0 ? checkedPolicy : cancellation_policy;
+	filterParams.isHighScored = isHighScored;
 
 	setFilter(filterParams);
   }
@@ -72,6 +74,10 @@ const Filters: FC<Props> = ({priceValue, typeValue, policyValue, setFilter, pric
 	}
   }
 
+  const handleReviewCheck = (e) => {
+	setHighScored(!isHighScored);
+  }
+
   return <form className='filters' onSubmit={handleSubmit}>
 	<div className="option option-price">
 	  <div className="title">
@@ -98,6 +104,13 @@ const Filters: FC<Props> = ({priceValue, typeValue, policyValue, setFilter, pric
 	  </div>
 	  <div className="inputs-wrapper">
 		{renderPolicyInputs()}
+	  </div>
+	</div>
+	<div className="option option-review">
+	  <div className="title">Review score</div>
+	  <div className="inputs-wrapper">
+		<label htmlFor="high-scored">High scored</label>
+		<input checked={isHighScored} onChange={handleReviewCheck} id={'high-scored'} type="checkbox" />
 	  </div>
 	</div>
 	<button className="button is-small primary">Apply</button>

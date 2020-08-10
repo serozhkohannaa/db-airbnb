@@ -49,8 +49,15 @@ router.route('/search/:name').get((req, res) => {
 		.catch(err => res.status(400).json('Error: ' + err));
 });
 
-router.route('/filter/:price&:property_type&:cancellation_policy').get((req, res) => {
-	ListingsAndReviews.find({ price : { $lt : req.params.price}, property_type: req.params.property_type.split(','), cancellation_policy: req.params.cancellation_policy.split(',')})
+router.route('/filter/:price&:property_type&:cancellation_policy&:review_scores_value').get((req, res) => {
+	let highScoreValue = req.params.review_scores_value == true ? 8 : 1;
+
+	ListingsAndReviews.find({
+		price : { $lt : req.params.price},
+		property_type: req.params.property_type.split(','),
+		cancellation_policy: req.params.cancellation_policy.split(','),
+		"review_scores.review_scores_value": { $gt : highScoreValue }
+	})
 		.then(review => res.json(review))
 		.catch(err => res.status(400).json('Error: ' + err));
 });

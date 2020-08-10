@@ -6,6 +6,7 @@ import { getData } from "../../services/request";
 import { connect } from 'react-redux';
 
 import { getTypes, getCancellationPolicy } from "../../action/actions";
+import { FiltersInterface } from "../../constants/filters.interface";
 
 import Filters from "../Filters/Filters";
 
@@ -47,10 +48,10 @@ const Content: FC<Props> = ({isOpen, getTypes, getCancellationPolicy}) => {
 	  .then(data => setData(data));
   }
 
-  const updateFilter = (params) => {
-	const {price, property_type, cancellation_policy} = params;
+  const updateFilter = (params: FiltersInterface) => {
+	const {price, property_type, cancellation_policy, isHighScored} = params;
 
-	getData(`http://localhost:5000/listingsAndReviews/filter/${price}&${property_type}&${cancellation_policy}`,)
+	getData(`http://localhost:5000/listingsAndReviews/filter/${price}&${property_type}&${cancellation_policy}&${isHighScored}`,)
 	  .then(data => setData(data));
   }
 
