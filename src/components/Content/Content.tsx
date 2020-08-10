@@ -5,16 +5,17 @@ import ReviewItem from "../ReviewItem/ReviewItem";
 import { getData } from "../../services/request";
 import { connect } from 'react-redux';
 
-import { getTypes } from "../../action/actions";
+import { getTypes, getCancellationPolicy } from "../../action/actions";
 
 import Filters from "../Filters/Filters";
 
 interface Props {
   isOpen: boolean;
-  getTypes: any
+  getTypes: Function;
+  getCancellationPolicy: Function;
 }
 
-const Content: FC<Props> = ({isOpen, getTypes}) => {
+const Content: FC<Props> = ({isOpen, getTypes, getCancellationPolicy}) => {
   const [data, setData] = useState([]);
   const [priceRange, setPriceRange] = useState({min: 0, max: 10000});
 
@@ -27,6 +28,7 @@ const Content: FC<Props> = ({isOpen, getTypes}) => {
 	  .then(priceMax => setPriceRange({...priceRange, max: priceMax}));
 
 	getTypes();
+	getCancellationPolicy();
   }, [])
 
   const updateList = (type: string) => {
@@ -46,14 +48,14 @@ const Content: FC<Props> = ({isOpen, getTypes}) => {
   }
 
   const updateFilter = (params) => {
-	const {price, property_type} = params;
+	const {price, property_type, cancellation_policy} = params;
 
-	getData(`http://localhost:5000/listingsAndReviews/filter/${price}&${property_type}`,)
+	getData(`http://localhost:5000/listingsAndReviews/filter/${price}&${property_type}&${cancellation_policy}`,)
 	  .then(data => setData(data));
   }
 
   const renderData = () => {
-	if (data.length > 0) {
+	if (data?.length > 0) {
 	  return data.map((item: any, i) => {
 		return <ReviewItem key={i} review={item}/>
 	  })
@@ -61,7 +63,7 @@ const Content: FC<Props> = ({isOpen, getTypes}) => {
   }
 
   return <section className='content'>
-	<NavParams setUpdate={updateList} setSearchRecord={searchRecord} setRefresh={refreshList} amount={data.length}/>
+	<NavParams setUpdate={updateList} setSearchRecord={searchRecord} setRefresh={refreshList} amount={data?.length}/>
 	<div className={`filters-wrapper ${isOpen && 'is-open'}`}>
 	  <Filters priceRange={priceRange} setFilter={updateFilter}/>
 	</div>
@@ -78,7 +80,8 @@ const mapStateToProps = ({application}) => {
 }
 
 const mapDispatchToProps = {
-  getTypes
+  getTypes,
+  getCancellationPolicy
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Content);
