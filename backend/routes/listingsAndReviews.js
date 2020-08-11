@@ -53,12 +53,30 @@ router.route('/filter/:price&:property_type&:cancellation_policy&:review_scores_
 	let highScoreValue = req.params.review_scores_value == true ? 8 : 1;
 
 	ListingsAndReviews.find({
-		price : { $lt : req.params.price},
+		price: {$lt: req.params.price},
 		property_type: req.params.property_type.split(','),
 		cancellation_policy: req.params.cancellation_policy.split(','),
-		"review_scores.review_scores_value": { $gt : highScoreValue }
+		"review_scores.review_scores_value": {$gt: highScoreValue}
 	})
 		.then(review => res.json(review))
+		.catch(err => res.status(400).json('Error: ' + err));
+});
+
+router.route('/update/:id').post((req, res) => {
+	ListingsAndReviews.findById(req.params.id)
+		.then(comment => {
+			comment.reviews = [...comment.reviews,
+				{
+					name: 'Anna',
+					reviewer_id: '00',
+					listing_id: req.params.id
+				}
+			]
+
+			comment.save()
+				.then(() => res.json('Comment updated!'))
+				.catch(err => res.status(400).json('Error: ' + err));
+		})
 		.catch(err => res.status(400).json('Error: ' + err));
 });
 

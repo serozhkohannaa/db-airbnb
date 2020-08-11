@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const reviewsSchema = new Schema({
+	_id: String,
 	listing_url: String,
 	name: String,
 	summary: String,

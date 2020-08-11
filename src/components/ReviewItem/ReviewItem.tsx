@@ -67,7 +67,7 @@ const ReviewItem: FC<Props> = ({review}) => {
   return <div className='review'>
 	<div className="review-top">
 	  <div className="img-wrapper">
-		<img src={review.images[0].picture_url} alt="flat-img"/>
+		<img src={review.images[0]?.picture_url} alt="flat-img"/>
 		<div className="buttons-holder">
 		  <button className="button is-small secondary">
 			{review.property_type}
@@ -126,7 +126,7 @@ const ReviewItem: FC<Props> = ({review}) => {
 				<p>Location</p>
 			  </div>
 			  <div className="desc-text">
-				{review.address.street}
+				{review.address?.street}
 			  </div>
 			</div>
 		  </div>
