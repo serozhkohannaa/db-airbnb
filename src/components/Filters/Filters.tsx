@@ -9,20 +9,27 @@ import { connect } from 'react-redux';
 interface Props {
   priceValue?: HTMLInputElement | null;
   typeValue?: HTMLInputElement | null;
-  setFilter: any;
+  policyValue?: HTMLInputElement | null;
+  setFilter: Function;
   priceRange: PriceRange;
   propertyTypes: ParamsInterfaces;
+  cancellation_policy: ParamsInterfaces;
 }
 
-const Filters: FC<Props> = ({priceValue, typeValue, setFilter, priceRange, propertyTypes}) => {
+const Filters: FC<Props> = ({priceValue, typeValue, policyValue, setFilter, priceRange, propertyTypes, cancellation_policy}) => {
   const [checkedValues, setChecked] = useState();
+  const [checkedPolicy, setCancellation] = useState();
+  const [isHighScored, setHighScored] = useState(false);
+
   let filterParams: FiltersInterface = {};
 
   const handleSubmit = (e: FormEvent) => {
 	e.preventDefault();
 
 	filterParams.price = priceValue?.value;
-	filterParams.property_type = checkedValues !== undefined ? checkedValues : propertyTypes;
+	filterParams.property_type = checkedValues?.length > 0 ? checkedValues : propertyTypes;
+	filterParams.cancellation_policy = checkedPolicy?.length > 0 ? checkedPolicy : cancellation_policy;
+	filterParams.isHighScored = isHighScored;
 
 	setFilter(filterParams);
   }
@@ -39,6 +46,10 @@ const Filters: FC<Props> = ({priceValue, typeValue, setFilter, priceRange, prope
 	}
   }
 
+  const handlePolicyChange = (type: string) => (e: FormEvent) => {
+	setCancellation(type);
+  }
+
   const renderInputs = () => {
 	if (propertyTypes) {
 	  // @ts-ignore
@@ -49,6 +60,22 @@ const Filters: FC<Props> = ({priceValue, typeValue, setFilter, priceRange, prope
 		</div>
 	  })
 	}
+  }
+
+  const renderPolicyInputs = () => {
+    if (cancellation_policy) {
+	  // @ts-ignore
+      return cancellation_policy.map((item, i) => {
+        return <div key={i} className='input'>
+		  <input onChange={handlePolicyChange(item)} name={'policy-type'} ref={(input) => policyValue = input} id={`cancellation${i}`} type="radio"/>
+		  <label htmlFor={`cancellation${i}`}>{item}</label>
+		</div>
+	  })
+	}
+  }
+
+  const handleReviewCheck = (e) => {
+	setHighScored(!isHighScored);
   }
 
   return <form className='filters' onSubmit={handleSubmit}>
@@ -64,11 +91,26 @@ const Filters: FC<Props> = ({priceValue, typeValue, setFilter, priceRange, prope
 		  <option value={priceRange.max} label={priceRange.max?.toString()}>{priceRange.max}</option>
 		</datalist>
 	  </div>
-	  <div className="option option-type">
-		<div className="title">Property type</div>
-		<div className="inputs-wrapper">
-		  {renderInputs()}
-		</div>
+	</div>
+	<div className="option option-type">
+	  <div className="title">Property type</div>
+	  <div className="inputs-wrapper">
+		{renderInputs()}
+	  </div>
+	</div>
+	<div className="option option-policy">
+	  <div className="title">
+		Cancellation Policy
+	  </div>
+	  <div className="inputs-wrapper">
+		{renderPolicyInputs()}
+	  </div>
+	</div>
+	<div className="option option-review">
+	  <div className="title">Review score</div>
+	  <div className="inputs-wrapper">
+		<label htmlFor="high-scored">High scored</label>
+		<input checked={isHighScored} onChange={handleReviewCheck} id={'high-scored'} type="checkbox" />
 	  </div>
 	</div>
 	<button className="button is-small primary">Apply</button>
@@ -77,7 +119,8 @@ const Filters: FC<Props> = ({priceValue, typeValue, setFilter, priceRange, prope
 
 const mapStateToProps = ({params}) => {
   return {
-	propertyTypes: params.propertyTypes
+	propertyTypes: params.propertyTypes,
+	cancellation_policy: params.cancellation_policy
   }
 }
 

@@ -2,19 +2,21 @@ import React, { FC, useEffect, useState } from 'react';
 import './Content.scss';
 import NavParams from "../NavParams/NavParams";
 import ReviewItem from "../ReviewItem/ReviewItem";
-import { getData } from "../../services/request";
+import { getData, postData } from "../../services/request";
 import { connect } from 'react-redux';
 
-import { getTypes } from "../../action/actions";
+import { getTypes, getCancellationPolicy } from "../../action/actions";
+import { FiltersInterface } from "../../constants/filters.interface";
 
 import Filters from "../Filters/Filters";
 
 interface Props {
   isOpen: boolean;
-  getTypes: any
+  getTypes: Function;
+  getCancellationPolicy: Function;
 }
 
-const Content: FC<Props> = ({isOpen, getTypes}) => {
+const Content: FC<Props> = ({isOpen, getTypes, getCancellationPolicy}) => {
   const [data, setData] = useState([]);
   const [priceRange, setPriceRange] = useState({min: 0, max: 10000});
 
@@ -27,6 +29,7 @@ const Content: FC<Props> = ({isOpen, getTypes}) => {
 	  .then(priceMax => setPriceRange({...priceRange, max: priceMax}));
 
 	getTypes();
+	getCancellationPolicy();
   }, [])
 
   const updateList = (type: string) => {
@@ -45,23 +48,29 @@ const Content: FC<Props> = ({isOpen, getTypes}) => {
 	  .then(data => setData(data));
   }
 
-  const updateFilter = (params) => {
-	const {price, property_type} = params;
+  const updateFilter = (params: FiltersInterface) => {
+	const {price, property_type, cancellation_policy, isHighScored} = params;
 
-	getData(`http://localhost:5000/listingsAndReviews/filter/${price}&${property_type}`,)
+	getData(`http://localhost:5000/listingsAndReviews/filter/${price}&${property_type}&${cancellation_policy}&${isHighScored}`,)
 	  .then(data => setData(data));
   }
 
+  const setCommentUpdate = (item) => {
+	postData(`http://localhost:5000/listingsandreviews/update/${item.listing_id}`, item)
+	  .then(res => refreshList())
+	  .catch(err => console.log(err, 'Can not perform update operation'))
+  }
+
   const renderData = () => {
-	if (data.length > 0) {
+	if (data?.length > 0) {
 	  return data.map((item: any, i) => {
-		return <ReviewItem key={i} review={item}/>
+		return <ReviewItem getNewComment={setCommentUpdate} key={i} review={item}/>
 	  })
 	} else return <div>loading or absence of data</div>
   }
 
   return <section className='content'>
-	<NavParams setUpdate={updateList} setSearchRecord={searchRecord} setRefresh={refreshList} amount={data.length}/>
+	<NavParams setUpdate={updateList} setSearchRecord={searchRecord} setRefresh={refreshList} amount={data?.length}/>
 	<div className={`filters-wrapper ${isOpen && 'is-open'}`}>
 	  <Filters priceRange={priceRange} setFilter={updateFilter}/>
 	</div>
@@ -78,7 +87,8 @@ const mapStateToProps = ({application}) => {
 }
 
 const mapDispatchToProps = {
-  getTypes
+  getTypes,
+  getCancellationPolicy
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Content);

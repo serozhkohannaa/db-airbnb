@@ -37,17 +37,55 @@ router.route('/get/propertyTypes').get((req, res) => {
 		.catch(err => res.status(400).json('Error: ' + err));
 });
 
+router.route('/get/cancellation_policy').get((req, res) => {
+	ListingsAndReviews.find({}, {cancellation_policy: 1})
+		.then(review => res.json(review))
+		.catch(err => res.status(400).json('Error: ' + err));
+});
+
 router.route('/search/:name').get((req, res) => {
 	ListingsAndReviews.find(req.params)
 		.then(review => res.json(review))
 		.catch(err => res.status(400).json('Error: ' + err));
 });
 
-router.route('/filter/:price&:property_type').get((req, res) => {
-	ListingsAndReviews.find({ price : { $lt : req.params.price}, property_type: req.params.property_type.split(',')})
+router.route('/filter/:price&:property_type&:cancellation_policy&:review_scores_value').get((req, res) => {
+	let highScoreValue = req.params.review_scores_value == true ? 8 : 1;
+
+	ListingsAndReviews.find({
+		price: {$lt: req.params.price},
+		property_type: req.params.property_type.split(','),
+		cancellation_policy: req.params.cancellation_policy.split(','),
+		"review_scores.review_scores_value": {$gt: highScoreValue}
+	})
 		.then(review => res.json(review))
 		.catch(err => res.status(400).json('Error: ' + err));
 });
 
+router.route('/update/:id').post((req, res) => {
+	console.log(req.body);
+	ListingsAndReviews.findById(req.params.id)
+		.then(comment => {
+			comment.reviews = [...comment.reviews,
+				{
+					reviewer_name: req.body.reviewer_name,
+					reviewer_id: req.body.reviewer_id,
+					listing_id: req.params.id,
+					comments: req.body.comments
+				}
+			]
+
+			comment.save()
+				.then(() => res.json('Comment upd!'))
+				.catch(err => res.status(400).json('Error: ' + err));
+		})
+		.catch(err => res.status(400).json('Error: ' + err));
+});
+
+// router.route('/delete/:commentId').delete((req, res) => {
+// 	ListingsAndReviews.findById('10006546')
+// 		.then((item) => item._id !== '58663741')
+// 		.catch(err => res.status(400).json('Error: ' + err))
+// })
 
 module.exports = router;

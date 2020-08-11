@@ -10,8 +10,11 @@ interface Props {
 }
 
 const Review: FC<Props> = ({review}) => {
-  const {reviewer_name, date, comments} = review;
+  const {reviewer_name, date, comments, reviewer_id} = review;
   const dateFormatted = moment(date).format('LL');
+
+  const handleRemove = (item) => {
+  }
 
   return <div className='review-item'>
 	<div className="review-item-header">
@@ -32,6 +35,7 @@ const Review: FC<Props> = ({review}) => {
 		<p>{comments}</p>
 	  </div>
 	</div>
+	{reviewer_id === '1001' && <button className="btn delete-btn" onClick={() => handleRemove(review)}>Remove</button>}
   </div>
 }
 
