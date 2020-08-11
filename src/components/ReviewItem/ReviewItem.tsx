@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import './ReviewItem.scss';
 
 import BedIcon from '../../assets/img/bed.svg';
@@ -13,14 +13,17 @@ import LocationIcon from '../../assets/img/location.svg';
 import PriceBlock from "../PriceBlock/PriceBlock";
 import ReviewScore from "../ReviewScore/ReviewScore";
 import Review from "../Review/Review";
+import AddComment from "../AddComment/AddComment";
 
 import { ScoreInterface } from "../../constants/score.interface";
 
 interface Props {
-  review: any
+  review: any;
+  getNewComment: Function;
 }
 
-const ReviewItem: FC<Props> = ({review}) => {
+const ReviewItem: FC<Props> = ({review, getNewComment}) => {
+  const [isModalOpen, setModalActive] = useState(false);
   let reviewScore: [ScoreInterface] = [
 	{
 	  type: '',
@@ -58,10 +61,23 @@ const ReviewItem: FC<Props> = ({review}) => {
 
   const renderSlider = () => {
 	if (review.reviews) {
-	  return review.reviews.map((item:any) => {
-	    return <Review key={item._id} review={item}/>
+	  return review.reviews.map((item:any, i) => {
+	    return <Review key={i} review={item}/>
 	  })
 	} else return <p>no reviews</p>
+  }
+
+  const handleModalOpen = () => {
+    setModalActive(true);
+	console.log(isModalOpen);
+  }
+
+  const setModalClose = () => {
+	setModalActive(false);
+  }
+
+  const setNewComment = (item) => {
+	getNewComment(item);
   }
 
   return <div className='review'>
@@ -140,8 +156,9 @@ const ReviewItem: FC<Props> = ({review}) => {
 		<div className="user-review-header">
 		  <div className="count">
 			<p>
-			  {review.number_of_reviews} reviews
+			  {review.reviews?.length} reviews
 			</p>
+			<button onClick={handleModalOpen}>add new</button>
 		  </div>
 		  <div className="review-value">
 			{review.review_scores?.review_scores_value}/10
@@ -150,9 +167,10 @@ const ReviewItem: FC<Props> = ({review}) => {
 		<div className="user-review-slider">
 		  {renderSlider()}
 		</div>
-
+		{isModalOpen && <AddComment getComment={setNewComment} id={review._id} closeModal={setModalClose} />}
 	  </div>
 	</div>
+
   </div>
 }
 

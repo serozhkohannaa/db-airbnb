@@ -63,18 +63,20 @@ router.route('/filter/:price&:property_type&:cancellation_policy&:review_scores_
 });
 
 router.route('/update/:id').post((req, res) => {
+	console.log(req.body);
 	ListingsAndReviews.findById(req.params.id)
 		.then(comment => {
 			comment.reviews = [...comment.reviews,
 				{
-					name: 'Anna',
-					reviewer_id: '00',
-					listing_id: req.params.id
+					reviewer_name: req.body.reviewer_name,
+					reviewer_id: req.body.reviewer_id,
+					listing_id: req.params.id,
+					comments: req.body.comments
 				}
 			]
 
 			comment.save()
-				.then(() => res.json('Comment updated!'))
+				.then(() => res.json('Comment upd!'))
 				.catch(err => res.status(400).json('Error: ' + err));
 		})
 		.catch(err => res.status(400).json('Error: ' + err));

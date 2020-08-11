@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import './Content.scss';
 import NavParams from "../NavParams/NavParams";
 import ReviewItem from "../ReviewItem/ReviewItem";
-import { getData } from "../../services/request";
+import { getData, postData } from "../../services/request";
 import { connect } from 'react-redux';
 
 import { getTypes, getCancellationPolicy } from "../../action/actions";
@@ -55,10 +55,16 @@ const Content: FC<Props> = ({isOpen, getTypes, getCancellationPolicy}) => {
 	  .then(data => setData(data));
   }
 
+  const setCommentUpdate = (item) => {
+	postData(`http://localhost:5000/listingsandreviews/update/${item.listing_id}`, item)
+	  .then(res => refreshList())
+	  .catch(err => console.log(err, 'Can not perform update operation'))
+  }
+
   const renderData = () => {
 	if (data?.length > 0) {
 	  return data.map((item: any, i) => {
-		return <ReviewItem key={i} review={item}/>
+		return <ReviewItem getNewComment={setCommentUpdate} key={i} review={item}/>
 	  })
 	} else return <div>loading or absence of data</div>
   }
