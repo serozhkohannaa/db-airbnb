@@ -82,5 +82,10 @@ router.route('/update/:id').post((req, res) => {
 		.catch(err => res.status(400).json('Error: ' + err));
 });
 
+// router.route('/delete/:commentId').delete((req, res) => {
+// 	ListingsAndReviews.findById('10006546')
+// 		.then((item) => item._id !== '58663741')
+// 		.catch(err => res.status(400).json('Error: ' + err))
+// })
 
 module.exports = router;
