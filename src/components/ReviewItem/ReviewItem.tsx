@@ -162,7 +162,7 @@ const ReviewItem: FC<Props> = ({review, getNewComment}) => {
 		  <div className="review-value">
 			{review.review_scores?.review_scores_value}/10
 		  </div>
-		  <button onClick={handleModalOpen}>add new</button>
+		  <button className='button add-comment' onClick={handleModalOpen}>Add comment</button>
 		</div>
 		<div className="user-review-slider">
 		  {renderSlider()}

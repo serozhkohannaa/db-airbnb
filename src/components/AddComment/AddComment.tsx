@@ -29,8 +29,12 @@ const AddComment: FC<Props> = ({closeModal, getComment, id, reviewer_name, listi
 	}
   }
 
-  return <form className='modal-wrapper' onSubmit={handleSubmit}>
-	<div className="modal">
+  const handleClose = () => {
+	closeModal();
+  }
+
+  return <div className='modal-wrapper' >
+	<form className="modal" onSubmit={handleSubmit}>
 	  <div className="title">Add new comment</div>
 	  <div className="input">
 		<label htmlFor="name">Name</label>
@@ -46,11 +50,12 @@ const AddComment: FC<Props> = ({closeModal, getComment, id, reviewer_name, listi
 	  </div>
 	  <div className="input">
 		<label htmlFor="reviewer_id">Comments</label>
-		<textarea name="comments" ref={(input) => comments = input} id='reviewer_id'/>
+		<textarea name="comments" ref={(input) => comments = input} minLength={10} id='reviewer_id'/>
 	  </div>
-	  <button>Add comment</button>
-	</div>
-  </form>
+	  <button className='button'>Add comment</button>
+	</form>
+	<div className="close-modal" onClick={handleClose}/>
+  </div>
 }
 
 export default AddComment;
