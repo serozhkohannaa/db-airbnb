@@ -61,10 +61,16 @@ const Content: FC<Props> = ({isOpen, getTypes, getCancellationPolicy}) => {
 	  .catch(err => console.log(err, 'Can not perform update operation'))
   }
 
+  const setDelete = (item) => {
+	postData(`http://localhost:5000/listingsandreviews/deleteComment/${item.listing_id}`, item)
+	  .then(res => refreshList())
+	  .catch(err => console.log(err, 'Can not perform update operation'))
+  }
+
   const renderData = () => {
 	if (data?.length > 0) {
 	  return data.map((item: any, i) => {
-		return <ReviewItem getNewComment={setCommentUpdate} key={i} review={item}/>
+		return <ReviewItem getCommentAndDelete={setDelete} getNewComment={setCommentUpdate} key={i} review={item}/>
 	  })
 	} else return <div>loading or absence of data</div>
   }

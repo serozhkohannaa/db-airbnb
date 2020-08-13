@@ -20,9 +20,10 @@ import { ScoreInterface } from "../../constants/score.interface";
 interface Props {
   review: any;
   getNewComment: Function;
+  getCommentAndDelete: Function;
 }
 
-const ReviewItem: FC<Props> = ({review, getNewComment}) => {
+const ReviewItem: FC<Props> = ({review, getNewComment, getCommentAndDelete}) => {
   const [isModalOpen, setModalActive] = useState(false);
   let reviewScore: [ScoreInterface] = [
 	{
@@ -59,10 +60,14 @@ const ReviewItem: FC<Props> = ({review, getNewComment}) => {
 	]
   }
 
+  const setDelete = (item) => {
+	getCommentAndDelete(item);
+  }
+
   const renderSlider = () => {
 	if (review.reviews) {
 	  return review.reviews.map((item:any, i) => {
-	    return <Review key={i} review={item}/>
+	    return <Review getReviewToDelete={setDelete} key={i} review={item}/>
 	  })
 	} else return <p>no reviews</p>
   }

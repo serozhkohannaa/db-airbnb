@@ -1,6 +1,5 @@
 import React, { FC, FormEvent } from 'react';
 import './AddComment.scss';
-import { CommentInterface } from "../../constants/comment.interface";
 
 interface Props {
   closeModal: Function;
@@ -17,6 +16,7 @@ const AddComment: FC<Props> = ({closeModal, getComment, id, reviewer_name, listi
     e.preventDefault();
 
 	let newComment = {
+	  _id: (Math.floor(Math.random() * 10000) + 1).toString(),
 	  reviewer_name: reviewer_name?.value,
 	  listing_id: listing_id?.value,
 	  reviewer_id: reviewer_id?.value,
