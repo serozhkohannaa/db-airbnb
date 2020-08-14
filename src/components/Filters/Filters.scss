@@ -17,6 +17,16 @@
       font-weight: 500;
     }
 
+    &.option-price {
+      .input-value {
+        margin-top: 30px;
+        text-align: center;
+        color: $blue-light;
+        font-weight: 500;
+        font-size: 12px;
+      }
+    }
+
     &.option-type, &.option-policy {
       width: 30%;
 
