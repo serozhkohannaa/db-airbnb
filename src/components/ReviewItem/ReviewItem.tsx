@@ -20,9 +20,10 @@ import { ScoreInterface } from "../../constants/score.interface";
 interface Props {
   review: any;
   getNewComment: Function;
+  getCommentAndDelete: Function;
 }
 
-const ReviewItem: FC<Props> = ({review, getNewComment}) => {
+const ReviewItem: FC<Props> = ({review, getNewComment, getCommentAndDelete}) => {
   const [isModalOpen, setModalActive] = useState(false);
   let reviewScore: [ScoreInterface] = [
 	{
@@ -59,10 +60,14 @@ const ReviewItem: FC<Props> = ({review, getNewComment}) => {
 	]
   }
 
+  const setDelete = (item) => {
+	getCommentAndDelete(item);
+  }
+
   const renderSlider = () => {
 	if (review.reviews) {
 	  return review.reviews.map((item:any, i) => {
-	    return <Review key={i} review={item}/>
+	    return <Review getReviewToDelete={setDelete} key={i} review={item}/>
 	  })
 	} else return <p>no reviews</p>
   }
@@ -162,7 +167,7 @@ const ReviewItem: FC<Props> = ({review, getNewComment}) => {
 		  <div className="review-value">
 			{review.review_scores?.review_scores_value}/10
 		  </div>
-		  <button onClick={handleModalOpen}>add new</button>
+		  <button className='button add-comment' onClick={handleModalOpen}>Add comment</button>
 		</div>
 		<div className="user-review-slider">
 		  {renderSlider()}

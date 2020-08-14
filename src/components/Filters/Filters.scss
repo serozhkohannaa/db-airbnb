@@ -1,10 +1,66 @@
+@import 'src/assets/variables';
+
 .filters {
   width: 100%;
   height: 100%;
-  background: pink;
-  padding: 50px 10px;
+  background: $light;
+  padding: 50px 30px;
   display: flex;
   position: relative;
+  justify-content: space-between;
+  border-radius: $border-radius-sm;
+
+  .option {
+    .title {
+      margin-bottom: 20px;
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    &.option-type, &.option-policy {
+      width: 30%;
+
+      .inputs-wrapper {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        height: 100%;
+
+        .input {
+          margin-bottom: 5px;
+          display: flex;
+          align-items: center;
+
+          input {
+            margin-right: 5px;
+          }
+
+          label {
+            text-transform: capitalize;
+          }
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+
+    &.option-policy {
+      width: auto;
+    }
+
+    &.option-review {
+      .input {
+        display: flex;
+        align-items: center;
+
+        input {
+          margin-right: 5px;
+        }
+      }
+    }
+  }
 
   .input {
     .data-list {

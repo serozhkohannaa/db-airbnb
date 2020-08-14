@@ -108,9 +108,9 @@ const Filters: FC<Props> = ({priceValue, typeValue, policyValue, setFilter, pric
 	</div>
 	<div className="option option-review">
 	  <div className="title">Review score</div>
-	  <div className="inputs-wrapper">
-		<label htmlFor="high-scored">High scored</label>
+	  <div className="input">
 		<input checked={isHighScored} onChange={handleReviewCheck} id={'high-scored'} type="checkbox" />
+		<label htmlFor="high-scored">High scored</label>
 	  </div>
 	</div>
 	<button className="button is-small primary">Apply</button>

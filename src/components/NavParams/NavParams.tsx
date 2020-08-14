@@ -8,15 +8,15 @@ import { setFiltersOpen } from "../../action/actions";
 import { connect } from 'react-redux'
 
 interface Props {
-  amount: number;
   setUpdate: any;
   setRefresh: any;
   setSearchRecord: any;
   isOpen: boolean;
   setFiltersOpen: any;
+  totalItems: number;
 }
 
-const NavParams: FC<Props> = ({amount, setUpdate, setRefresh, setSearchRecord, isOpen, setFiltersOpen}) => {
+const NavParams: FC<Props> = ({setUpdate, setRefresh, setSearchRecord, isOpen, setFiltersOpen, totalItems}) => {
   const setType = (type: string) => {
 	setUpdate(type);
   }
@@ -35,7 +35,7 @@ const NavParams: FC<Props> = ({amount, setUpdate, setRefresh, setSearchRecord, i
 
   return <div className='navParams'>
 	<button className="button secondary is-medium amount">
-	  {amount} items
+	  {totalItems} items
 	</button>
 	<button className="button refresh" onClick={handleRefresh}>
 	  <img src={RefreshIcon} alt="refresh-icon"/>
@@ -44,15 +44,18 @@ const NavParams: FC<Props> = ({amount, setUpdate, setRefresh, setSearchRecord, i
 	  <Input setSearch={setSearch}/>
 	</div>
 	<SortParams setSort={setType}/>
-	<button className="button open-btn" onClick={handleOpen}>
-	  open
+	<button className={`button open-btn btn-burger ${isOpen && 'is-open'}`} onClick={handleOpen}>
+	  <span></span>
+	  <span></span>
+	  <span></span>
 	</button>
   </div>
 }
 
 const mapStateToProps = ({application}) => {
   return {
-	isOpen: application.isOpen
+	isOpen: application.isOpen,
+	totalItems: application.totalItems
   }
 }
 

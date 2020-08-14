@@ -1,3 +1,5 @@
 export interface ApplicationInterface {
-  isOpen: boolean
+  isOpen: boolean;
+  totalItems: number;
+  maxLimit: number;
 }

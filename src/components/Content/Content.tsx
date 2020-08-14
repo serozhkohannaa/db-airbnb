@@ -2,10 +2,11 @@ import React, { FC, useEffect, useState } from 'react';
 import './Content.scss';
 import NavParams from "../NavParams/NavParams";
 import ReviewItem from "../ReviewItem/ReviewItem";
+import LoadMore from "../LoadMore/LoadMore";
 import { getData, postData } from "../../services/request";
 import { connect } from 'react-redux';
 
-import { getTypes, getCancellationPolicy } from "../../action/actions";
+import { getTypes, getCancellationPolicy, getAmount } from "../../action/actions";
 import { FiltersInterface } from "../../constants/filters.interface";
 
 import Filters from "../Filters/Filters";
@@ -14,9 +15,10 @@ interface Props {
   isOpen: boolean;
   getTypes: Function;
   getCancellationPolicy: Function;
+  getAmount: Function
 }
 
-const Content: FC<Props> = ({isOpen, getTypes, getCancellationPolicy}) => {
+const Content: FC<Props> = ({isOpen, getTypes, getCancellationPolicy, getAmount}) => {
   const [data, setData] = useState([]);
   const [priceRange, setPriceRange] = useState({min: 0, max: 10000});
 
@@ -30,6 +32,7 @@ const Content: FC<Props> = ({isOpen, getTypes, getCancellationPolicy}) => {
 
 	getTypes();
 	getCancellationPolicy();
+	getAmount();
   }, [])
 
   const updateList = (type: string) => {
@@ -61,21 +64,35 @@ const Content: FC<Props> = ({isOpen, getTypes, getCancellationPolicy}) => {
 	  .catch(err => console.log(err, 'Can not perform update operation'))
   }
 
+  const setDelete = (item) => {
+	postData(`http://localhost:5000/listingsandreviews/deleteComment/${item.listing_id}`, item)
+	  .then(res => refreshList())
+	  .catch(err => console.log(err, 'Can not perform update operation'))
+  }
+
   const renderData = () => {
 	if (data?.length > 0) {
 	  return data.map((item: any, i) => {
-		return <ReviewItem getNewComment={setCommentUpdate} key={i} review={item}/>
+		return <ReviewItem getCommentAndDelete={setDelete} getNewComment={setCommentUpdate} key={i} review={item}/>
 	  })
 	} else return <div>loading or absence of data</div>
   }
 
+  const setMore = () => {
+	getData(`http://localhost:5000/listingsAndReviews/loadMore`,)
+	  .then(data => refreshList());
+  }
+
   return <section className='content'>
-	<NavParams setUpdate={updateList} setSearchRecord={searchRecord} setRefresh={refreshList} amount={data?.length}/>
+	<NavParams setUpdate={updateList} setSearchRecord={searchRecord} setRefresh={refreshList}/>
 	<div className={`filters-wrapper ${isOpen && 'is-open'}`}>
 	  <Filters priceRange={priceRange} setFilter={updateFilter}/>
 	</div>
 	<div className="content-list">
 	  {renderData()}
+	</div>
+	<div className="content-more">
+	  <LoadMore loadMore={setMore} loadedAmount={data?.length}/>
 	</div>
   </section>
 }
@@ -88,7 +105,8 @@ const mapStateToProps = ({application}) => {
 
 const mapDispatchToProps = {
   getTypes,
-  getCancellationPolicy
+  getCancellationPolicy,
+  getAmount
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Content);

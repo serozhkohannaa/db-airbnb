@@ -7,14 +7,12 @@ import { CommentInterface } from "../../constants/comment.interface";
 
 interface Props {
   review: CommentInterface;
+  getReviewToDelete: Function
 }
 
-const Review: FC<Props> = ({review}) => {
+const Review: FC<Props> = ({review, getReviewToDelete}) => {
   const {reviewer_name, date, comments, reviewer_id} = review;
   const dateFormatted = moment(date).format('LL');
-
-  const handleRemove = (item) => {
-  }
 
   return <div className='review-item'>
 	<div className="review-item-header">
@@ -35,7 +33,7 @@ const Review: FC<Props> = ({review}) => {
 		<p>{comments}</p>
 	  </div>
 	</div>
-	{reviewer_id === '1001' && <button className="btn delete-btn" onClick={() => handleRemove(review)}>Remove</button>}
+	{reviewer_id === '1001' && <button className="btn delete-btn" onClick={() => getReviewToDelete(review)}>Remove</button>}
   </div>
 }
 

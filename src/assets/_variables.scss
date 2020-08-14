@@ -6,14 +6,15 @@ $deep-blue: #2B2A5E;
 $pink: #FFCAC9;
 $purple: #C377E2;
 
+$pink-light: rgba($pink, .2);
+$blue-light: rgba($deep-blue, .5);
+
 $border-radius-sm: 5px;
 $border-radius-md: 10px;
 
 $ls-md: 0.05em;
 $ls-sm: 0.03em;
 
-$pink-light: rgba($pink, .2);
-$blue-light: rgba($deep-blue, .5);
 
 $Montserrat: 'Montserrat', sans-serif;
 $DMSans: 'DM Sans', sans-serif;
