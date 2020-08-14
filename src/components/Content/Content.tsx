@@ -6,19 +6,22 @@ import LoadMore from "../LoadMore/LoadMore";
 import { getData, postData } from "../../services/request";
 import { connect } from 'react-redux';
 
-import { getTypes, getCancellationPolicy, getAmount } from "../../action/actions";
+import { getTypes, getCancellationPolicy, getAmount, setLoader } from "../../action/actions";
 import { FiltersInterface } from "../../constants/filters.interface";
 
 import Filters from "../Filters/Filters";
+import Loader from "../Loader/Loader";
 
 interface Props {
   isOpen: boolean;
   getTypes: Function;
   getCancellationPolicy: Function;
-  getAmount: Function
+  getAmount: Function;
+  setLoader: Function;
+  hasLoader: boolean
 }
 
-const Content: FC<Props> = ({isOpen, getTypes, getCancellationPolicy, getAmount}) => {
+const Content: FC<Props> = ({isOpen, getTypes, getCancellationPolicy, getAmount, setLoader, hasLoader}) => {
   const [data, setData] = useState([]);
   const [priceRange, setPriceRange] = useState({min: 0, max: 10000});
 
@@ -36,14 +39,22 @@ const Content: FC<Props> = ({isOpen, getTypes, getCancellationPolicy, getAmount}
   }, [])
 
   const updateList = (type: string) => {
+	setLoader(true);
 	getData(`http://localhost:5000/listingsAndReviews/sort/${type}`)
-	  .then(data => setData(data));
+	  .then(data => {
+		setLoader(false);
+		setData(data);
+	  });
   }
 
-
   const refreshList = () => {
+	setLoader(true);
+
 	getData('http://localhost:5000/listingsAndReviews')
-	  .then(data => setData(data));
+	  .then(data => {
+		setLoader(false);
+		setData(data)
+	  });
   }
 
   const searchRecord = (searchValue: string) => {
@@ -53,9 +64,13 @@ const Content: FC<Props> = ({isOpen, getTypes, getCancellationPolicy, getAmount}
 
   const updateFilter = (params: FiltersInterface) => {
 	const {price, property_type, cancellation_policy, isHighScored} = params;
+	setLoader(true);
 
 	getData(`http://localhost:5000/listingsAndReviews/filter/${price}&${property_type}&${cancellation_policy}&${isHighScored}`,)
-	  .then(data => setData(data));
+	  .then(data => {
+		setLoader(false);
+		setData(data)
+	  });
   }
 
   const setCommentUpdate = (item) => {
@@ -79,8 +94,12 @@ const Content: FC<Props> = ({isOpen, getTypes, getCancellationPolicy, getAmount}
   }
 
   const setMore = () => {
+	setLoader(true);
 	getData(`http://localhost:5000/listingsAndReviews/loadMore`,)
-	  .then(data => refreshList());
+	  .then(data => {
+		setLoader(false);
+		refreshList()
+	  });
   }
 
   return <section className='content'>
@@ -94,19 +113,22 @@ const Content: FC<Props> = ({isOpen, getTypes, getCancellationPolicy, getAmount}
 	<div className="content-more">
 	  <LoadMore loadMore={setMore} loadedAmount={data?.length}/>
 	</div>
+	{hasLoader && <div className='loader-wrapper'><Loader/></div>}
   </section>
 }
 
 const mapStateToProps = ({application}) => {
   return {
-	isOpen: application.isOpen
+	isOpen: application.isOpen,
+	hasLoader: application.hasLoader
   }
 }
 
 const mapDispatchToProps = {
   getTypes,
   getCancellationPolicy,
-  getAmount
+  getAmount,
+  setLoader
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Content);
