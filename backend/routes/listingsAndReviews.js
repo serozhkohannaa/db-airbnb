@@ -95,17 +95,6 @@ router.route('/update/:id').post((req, res) => {
 		.catch(err => res.status(400).json('Error: ' + err));
 });
 
-// var itemsPerPage = 10;
-//
-// router.get('/reviews/:1', function(req, res) {
-// 	ListingsAndReviews.find(query, {skip: (itemsPerPage * (pageNum-1)), limit: itemsPerPage},function(e, docs){
-// 		res.render('data', {
-// 			title: 'Users',
-// 			'users': docs
-// 		});
-// 	});
-// });
-
 router.route('/deleteComment/:id').post((req, res) => {
 	ListingsAndReviews.findById(req.params.id)
 		.then(review => {
@@ -119,14 +108,5 @@ router.route('/deleteComment/:id').post((req, res) => {
 		})
 		.catch(err => res.status(400).json('Error: ' + err));
 })
-
-// router.route('/pagination').get((req, res) => {
-// 	let pageNumber = 1;
-//
-// 	ListingsAndReviews.find()
-// 		.skip(pageNumber > 0 ? ((pageNumber - 1) * nPerPage) : 0)
-// 		.limit(nPerPage)
-// 		.then(review => res.json(review));
-// });
 
 module.exports = router;
