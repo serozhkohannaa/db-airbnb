@@ -1,8 +1,20 @@
 const router = require('express').Router();
 const ListingsAndReviews = require('../models/reviews.model');
 
+const nPerPage = 10;
+let currentPage = 1;
+
+router.route('/loadMore').get((req, res) => {
+	currentPage = currentPage + 1;
+	ListingsAndReviews.find()
+		.then(review => res.json(review))
+		.catch(err => res.status(400).json('Error: ' + err));
+});
+
 router.route('/').get((req, res) => {
 	ListingsAndReviews.find()
+		// .skip(currentPage > 0 ? ((currentPage - 1) * nPerPage) : 0)
+		.limit(nPerPage * currentPage)
 		.then(review => res.json(review))
 		.catch(err => res.status(400).json('Error: ' + err));
 });
@@ -107,5 +119,14 @@ router.route('/deleteComment/:id').post((req, res) => {
 		})
 		.catch(err => res.status(400).json('Error: ' + err));
 })
+
+// router.route('/pagination').get((req, res) => {
+// 	let pageNumber = 1;
+//
+// 	ListingsAndReviews.find()
+// 		.skip(pageNumber > 0 ? ((pageNumber - 1) * nPerPage) : 0)
+// 		.limit(nPerPage)
+// 		.then(review => res.json(review));
+// });
 
 module.exports = router;

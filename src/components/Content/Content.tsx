@@ -2,6 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import './Content.scss';
 import NavParams from "../NavParams/NavParams";
 import ReviewItem from "../ReviewItem/ReviewItem";
+import LoadMore from "../LoadMore/LoadMore";
 import { getData, postData } from "../../services/request";
 import { connect } from 'react-redux';
 
@@ -75,6 +76,11 @@ const Content: FC<Props> = ({isOpen, getTypes, getCancellationPolicy}) => {
 	} else return <div>loading or absence of data</div>
   }
 
+  const setMore = () => {
+	getData(`http://localhost:5000/listingsAndReviews/loadMore`,)
+	  .then(data => refreshList());
+  }
+
   return <section className='content'>
 	<NavParams setUpdate={updateList} setSearchRecord={searchRecord} setRefresh={refreshList} amount={data?.length}/>
 	<div className={`filters-wrapper ${isOpen && 'is-open'}`}>
@@ -82,6 +88,9 @@ const Content: FC<Props> = ({isOpen, getTypes, getCancellationPolicy}) => {
 	</div>
 	<div className="content-list">
 	  {renderData()}
+	</div>
+	<div className="content-more">
+	  <LoadMore loadMore={setMore}/>
 	</div>
   </section>
 }
