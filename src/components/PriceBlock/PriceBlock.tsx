@@ -7,7 +7,7 @@ interface Props {
   fee: number;
 }
 
-const PriceBlock: FC<Props> = ({price, deposit, fee}) => {
+const PriceBlock: FC<Props> = ({price= 0, deposit= 0, fee= 0}) => {
   return <div className='priceBlock'>
 	<div className="header">
 	  <h6>Total price</h6>

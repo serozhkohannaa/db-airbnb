@@ -1,4 +1,4 @@
-import { SET_FILTERS_OPEN, GET_TYPES, GET_CANCELLATION_POLICY, GET_TOTAL_ITEMS } from "../constants/action-types";
+import { SET_FILTERS_OPEN, GET_TYPES, GET_CANCELLATION_POLICY, GET_TOTAL_ITEMS, SET_LOADER } from "../constants/action-types";
 import axios from 'axios';
 
 export const setFiltersOpen = payload => ({
@@ -46,4 +46,9 @@ export const getAmount = () => {
 	  })
   }
 }
+
+export const setLoader = payload => ({
+  type: SET_LOADER,
+  payload
+})
 
