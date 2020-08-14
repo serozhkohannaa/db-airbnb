@@ -11,6 +11,7 @@ export default function application(state = initialState, action) {
   switch (action.type) {
     case SET_FILTERS_OPEN:
       return {
+        ...state,
         isOpen: action.payload
       }
     case GET_TOTAL_ITEMS:
