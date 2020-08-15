@@ -1,4 +1,4 @@
-import { SET_FILTERS_OPEN, GET_TYPES, GET_CANCELLATION_POLICY, GET_TOTAL_ITEMS, SET_LOADER } from "../constants/action-types";
+import { SET_FILTERS_OPEN, GET_TYPES, GET_CANCELLATION_POLICY, SET_LOADER } from "../constants/action-types";
 import axios from 'axios';
 
 export const setFiltersOpen = payload => ({
@@ -27,20 +27,6 @@ export const getCancellationPolicy = () => {
 	  .then(response => {
 		dispatch({
 		  type: GET_CANCELLATION_POLICY,
-		  payload: response.data
-		})
-	  })
-  }
-}
-
-export const getAmount = () => {
-  let url = 'http://localhost:5000/listingsAndReviews/getCount';
-
-  return dispatch => {
-	axios.get(url)
-	  .then(response => {
-		dispatch({
-		  type: GET_TOTAL_ITEMS,
 		  payload: response.data
 		})
 	  })

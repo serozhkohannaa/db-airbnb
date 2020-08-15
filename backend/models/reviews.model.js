@@ -47,5 +47,7 @@ const reviewsSchema = new Schema({
 	timestamps: true
 });
 
+reviewsSchema.index({ name: 'text' })
+
 const ListingsAndReviews = mongoose.model('ListingsAndReviews', reviewsSchema);
 module.exports = ListingsAndReviews;

@@ -25,6 +25,10 @@ interface Props {
 
 const ReviewItem: FC<Props> = ({review, getNewComment, getCommentAndDelete}) => {
   const [isModalOpen, setModalActive] = useState(false);
+  let [currentSlide, setCurrentSlide] = useState(0);
+
+  const maxSlides = review.reviews?.length;
+
   let reviewScore: [ScoreInterface] = [
 	{
 	  type: '',
@@ -74,7 +78,6 @@ const ReviewItem: FC<Props> = ({review, getNewComment, getCommentAndDelete}) => 
 
   const handleModalOpen = () => {
     setModalActive(true);
-	console.log(isModalOpen);
   }
 
   const setModalClose = () => {
@@ -83,6 +86,22 @@ const ReviewItem: FC<Props> = ({review, getNewComment, getCommentAndDelete}) => 
 
   const setNewComment = (item) => {
 	getNewComment(item);
+  }
+
+  const handleSlideClick = (type:string) => {
+	if (type === 'next') {
+	  if (currentSlide === maxSlides) {
+	    setCurrentSlide(maxSlides)
+	  } else {
+		setCurrentSlide(++currentSlide)
+	  }
+	} else if (type === 'prev') {
+	  if (currentSlide === 0) {
+		setCurrentSlide(0)
+	  } else {
+		setCurrentSlide(--currentSlide)
+	  }
+	}
   }
 
   return <div className='review'>
@@ -167,15 +186,24 @@ const ReviewItem: FC<Props> = ({review, getNewComment, getCommentAndDelete}) => 
 		  <div className="review-value">
 			{review.review_scores?.review_scores_value}/10
 		  </div>
-		  <button className='button add-comment' onClick={handleModalOpen}>Add comment</button>
+		  <button className='button add-comment' onClick={handleModalOpen}>Add review</button>
 		</div>
 		<div className="user-review-slider">
-		  {renderSlider()}
+		  <div className="slider-wrapper" style={{ right: currentSlide * 100 + '%'}}>
+			{renderSlider()}
+		  </div>
+		  {review.reviews?.length > 1 &&
+		  	<div className="slider-arrows">
+			  <button disabled={currentSlide === 0} onClick={() => handleSlideClick('prev')} className="arrow prev-slide"/>
+			  <button disabled={currentSlide === maxSlides - 1} onClick={() => handleSlideClick('next')} className="arrow next-slide"/>
+		  	</div>}
+		  {review.reviews?.length === 0 && <div className="no-review">
+			<button className='button add-comment' onClick={handleModalOpen}>Add review</button>
+		  </div>}
 		</div>
 		{isModalOpen && <AddComment getComment={setNewComment} id={review._id} closeModal={setModalClose} />}
 	  </div>
 	</div>
-
   </div>
 }
 

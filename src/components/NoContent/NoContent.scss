@@ -1,0 +1,20 @@
+@import 'src/assets/variables';
+
+.no-content {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+
+  .title {
+    color: $deep-blue;
+    font-size: 25px;
+    font-weight: 500;
+    margin-bottom: 50px;
+  }
+
+  .button {
+    border-bottom: 2px solid $pink-light;
+    cursor: pointer;
+  }
+}

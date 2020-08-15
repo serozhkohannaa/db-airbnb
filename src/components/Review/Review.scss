@@ -44,6 +44,18 @@
     position: absolute;
     cursor: pointer;
     top: 0;
-    right: 0;
+    right: 10px;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    padding: 10px;
+
+    &:hover {
+      background: rgba($pink-light, .2);
+    }
+
+    img {
+      width: 100%;
+    }
   }
 }

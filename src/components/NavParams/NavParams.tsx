@@ -13,10 +13,10 @@ interface Props {
   setSearchRecord: any;
   isOpen: boolean;
   setFiltersOpen: any;
-  totalItems: number;
+  total: number;
 }
 
-const NavParams: FC<Props> = ({setUpdate, setRefresh, setSearchRecord, isOpen, setFiltersOpen, totalItems}) => {
+const NavParams: FC<Props> = ({setUpdate, setRefresh, setSearchRecord, isOpen, setFiltersOpen, total}) => {
   const setType = (type: string) => {
 	setUpdate(type);
   }
@@ -35,7 +35,7 @@ const NavParams: FC<Props> = ({setUpdate, setRefresh, setSearchRecord, isOpen, s
 
   return <div className='navParams'>
 	<button className="button secondary is-medium amount">
-	  {totalItems} items
+	  {total} items
 	</button>
 	<button className="button refresh" onClick={handleRefresh}>
 	  <img src={RefreshIcon} alt="refresh-icon"/>
@@ -55,7 +55,6 @@ const NavParams: FC<Props> = ({setUpdate, setRefresh, setSearchRecord, isOpen, s
 const mapStateToProps = ({application}) => {
   return {
 	isOpen: application.isOpen,
-	totalItems: application.totalItems
   }
 }
 

@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import './Review.scss';
 import UserIcon from '../../assets/img/user.svg';
+import DeleteIcon from '../../assets/img/delete.svg';
 import moment from "moment";
 
 import { CommentInterface } from "../../constants/comment.interface";
@@ -33,7 +34,9 @@ const Review: FC<Props> = ({review, getReviewToDelete}) => {
 		<p>{comments}</p>
 	  </div>
 	</div>
-	{reviewer_id === '1001' && <button className="btn delete-btn" onClick={() => getReviewToDelete(review)}>Remove</button>}
+	{reviewer_id === '1001' && <button className="btn delete-btn" onClick={() => getReviewToDelete(review)}>
+			<img src={DeleteIcon} alt="delete-basket"/>
+	</button>}
   </div>
 }
 
