@@ -78,7 +78,6 @@ const ReviewItem: FC<Props> = ({review, getNewComment, getCommentAndDelete}) => 
 
   const handleModalOpen = () => {
     setModalActive(true);
-	console.log('click');
   }
 
   const setModalClose = () => {
