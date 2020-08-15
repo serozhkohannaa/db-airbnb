@@ -2,12 +2,11 @@ import React, { FC, useEffect, useState } from 'react';
 import './Content.scss';
 import NavParams from "../NavParams/NavParams";
 import ReviewItem from "../ReviewItem/ReviewItem";
-import LoadMore from "../LoadMore/LoadMore";
 import NoContent from "../NoContent/NoContent";
 import { getData, postData } from "../../services/request";
 import { connect } from 'react-redux';
 
-import { getTypes, getCancellationPolicy, getAmount, setLoader } from "../../action/actions";
+import { getTypes, getCancellationPolicy, setLoader } from "../../action/actions";
 import { FiltersInterface } from "../../constants/filters.interface";
 
 import Filters from "../Filters/Filters";
@@ -17,12 +16,11 @@ interface Props {
   isOpen: boolean;
   getTypes: Function;
   getCancellationPolicy: Function;
-  getAmount: Function;
   setLoader: Function;
   hasLoader: boolean
 }
 
-const Content: FC<Props> = ({isOpen, getTypes, getCancellationPolicy, getAmount, setLoader, hasLoader}) => {
+const Content: FC<Props> = ({isOpen, getTypes, getCancellationPolicy, setLoader, hasLoader}) => {
   const [data, setData] = useState([]);
   const [priceRange, setPriceRange] = useState({min: 0, max: 10000});
 
@@ -36,7 +34,6 @@ const Content: FC<Props> = ({isOpen, getTypes, getCancellationPolicy, getAmount,
 
 	getTypes();
 	getCancellationPolicy();
-	getAmount();
   }, [])
 
   const updateList = (type: string) => {
@@ -59,8 +56,13 @@ const Content: FC<Props> = ({isOpen, getTypes, getCancellationPolicy, getAmount,
   }
 
   const searchRecord = (searchValue: string) => {
+	setLoader(true);
+
 	getData(`http://localhost:5000/listingsAndReviews/search/${searchValue}`)
-	  .then(data => setData(data));
+	  .then(data => {
+		setLoader(false);
+		setData(data)
+	  });
   }
 
   const updateFilter = (params: FiltersInterface) => {
@@ -94,25 +96,14 @@ const Content: FC<Props> = ({isOpen, getTypes, getCancellationPolicy, getAmount,
 	} else return <NoContent refreshSearch={refreshList} />
   }
 
-  const setMore = () => {
-	setLoader(true);
-	getData(`http://localhost:5000/listingsAndReviews/loadMore`,)
-	  .then(data => {
-		setLoader(false);
-		refreshList()
-	  });
-  }
 
   return <section className='content'>
-	<NavParams setUpdate={updateList} setSearchRecord={searchRecord} setRefresh={refreshList}/>
+	<NavParams total={data?.length} setUpdate={updateList} setSearchRecord={searchRecord} setRefresh={refreshList}/>
 	<div className={`filters-wrapper ${isOpen && 'is-open'}`}>
 	  <Filters priceRange={priceRange} setFilter={updateFilter}/>
 	</div>
 	<div className="content-list">
 	  {renderData()}
-	</div>
-	<div className="content-more">
-	  {data?.length > 0 && <LoadMore loadMore={setMore} loadedAmount={data?.length}/>}
 	</div>
 	{hasLoader && <div className='loader-wrapper'><Loader/></div>}
   </section>
@@ -128,7 +119,6 @@ const mapStateToProps = ({application}) => {
 const mapDispatchToProps = {
   getTypes,
   getCancellationPolicy,
-  getAmount,
   setLoader
 }
 
