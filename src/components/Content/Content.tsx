@@ -3,6 +3,7 @@ import './Content.scss';
 import NavParams from "../NavParams/NavParams";
 import ReviewItem from "../ReviewItem/ReviewItem";
 import LoadMore from "../LoadMore/LoadMore";
+import NoContent from "../NoContent/NoContent";
 import { getData, postData } from "../../services/request";
 import { connect } from 'react-redux';
 
@@ -90,7 +91,7 @@ const Content: FC<Props> = ({isOpen, getTypes, getCancellationPolicy, getAmount,
 	  return data.map((item: any, i) => {
 		return <ReviewItem getCommentAndDelete={setDelete} getNewComment={setCommentUpdate} key={i} review={item}/>
 	  })
-	} else return <div>loading or absence of data</div>
+	} else return <NoContent refreshSearch={refreshList} />
   }
 
   const setMore = () => {
@@ -111,7 +112,7 @@ const Content: FC<Props> = ({isOpen, getTypes, getCancellationPolicy, getAmount,
 	  {renderData()}
 	</div>
 	<div className="content-more">
-	  <LoadMore loadMore={setMore} loadedAmount={data?.length}/>
+	  {data?.length > 0 && <LoadMore loadMore={setMore} loadedAmount={data?.length}/>}
 	</div>
 	{hasLoader && <div className='loader-wrapper'><Loader/></div>}
   </section>
