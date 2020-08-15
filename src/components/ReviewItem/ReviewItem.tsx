@@ -197,7 +197,7 @@ const ReviewItem: FC<Props> = ({review, getNewComment, getCommentAndDelete}) => 
 		  </div>
 		  <div className="slider-arrows">
 			<button disabled={currentSlide === 0} onClick={() => handleSlideClick('prev')} className="arrow prev-slide"/>
-			<button disabled={currentSlide === maxSlides} onClick={() => handleSlideClick('next')} className="arrow next-slide"/>
+			<button disabled={currentSlide === maxSlides-1} onClick={() => handleSlideClick('next')} className="arrow next-slide"/>
 		  </div>
 		</div>
 		{isModalOpen && <AddComment getComment={setNewComment} id={review._id} closeModal={setModalClose} />}
