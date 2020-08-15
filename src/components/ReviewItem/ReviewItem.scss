@@ -226,27 +226,6 @@
           justify-content: center;
           align-items: center;
         }
-
-        .button {
-          &.add-comment {
-            margin-left: auto;
-            position: relative;
-            padding-left: 20px;
-            cursor: pointer;
-
-            &:before {
-              content: '';
-              background: url("../../assets/img/add.svg");
-              width: 12px;
-              height: 12px;
-              background-size: contain;
-              background-repeat: no-repeat;
-              position: absolute;
-              top: 2px;
-              left: 0;
-            }
-          }
-        }
       }
 
       &-slider {
@@ -297,6 +276,37 @@
               opacity: 1;
             }
           }
+        }
+
+        .no-review {
+          height: 100%;
+          width: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          .add-comment {
+            margin: 0;
+          }
+        }
+      }
+
+      .add-comment {
+        margin-left: auto;
+        position: relative;
+        padding-left: 20px;
+        cursor: pointer;
+
+        &:before {
+          content: '';
+          background: url("../../assets/img/add.svg");
+          width: 12px;
+          height: 12px;
+          background-size: contain;
+          background-repeat: no-repeat;
+          position: absolute;
+          top: 2px;
+          left: 0;
         }
       }
     }

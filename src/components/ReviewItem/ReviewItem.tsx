@@ -78,7 +78,7 @@ const ReviewItem: FC<Props> = ({review, getNewComment, getCommentAndDelete}) => 
 
   const handleModalOpen = () => {
     setModalActive(true);
-	console.log(isModalOpen);
+	console.log('click');
   }
 
   const setModalClose = () => {
@@ -103,8 +103,6 @@ const ReviewItem: FC<Props> = ({review, getNewComment, getCommentAndDelete}) => 
 		setCurrentSlide(--currentSlide)
 	  }
 	}
-
-	console.log(currentSlide);
   }
 
   return <div className='review'>
@@ -189,21 +187,24 @@ const ReviewItem: FC<Props> = ({review, getNewComment, getCommentAndDelete}) => 
 		  <div className="review-value">
 			{review.review_scores?.review_scores_value}/10
 		  </div>
-		  <button className='button add-comment' onClick={handleModalOpen}>Add comment</button>
+		  <button className='button add-comment' onClick={handleModalOpen}>Add review</button>
 		</div>
 		<div className="user-review-slider">
 		  <div className="slider-wrapper" style={{ right: currentSlide * 100 + '%'}}>
 			{renderSlider()}
 		  </div>
-		  <div className="slider-arrows">
-			<button disabled={currentSlide === 0} onClick={() => handleSlideClick('prev')} className="arrow prev-slide"/>
-			<button disabled={currentSlide === maxSlides-1} onClick={() => handleSlideClick('next')} className="arrow next-slide"/>
-		  </div>
+		  {review.reviews?.length > 1 &&
+		  	<div className="slider-arrows">
+			  <button disabled={currentSlide === 0} onClick={() => handleSlideClick('prev')} className="arrow prev-slide"/>
+			  <button disabled={currentSlide === maxSlides - 1} onClick={() => handleSlideClick('next')} className="arrow next-slide"/>
+		  	</div>}
+		  {review.reviews?.length === 0 && <div className="no-review">
+			<button className='button add-comment' onClick={handleModalOpen}>Add review</button>
+		  </div>}
 		</div>
 		{isModalOpen && <AddComment getComment={setNewComment} id={review._id} closeModal={setModalClose} />}
 	  </div>
 	</div>
-
   </div>
 }
 
