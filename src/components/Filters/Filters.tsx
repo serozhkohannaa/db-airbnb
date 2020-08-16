@@ -88,11 +88,11 @@ const Filters: FC<Props> = ({ typeValue, policyValue, setFilter, priceRange, pro
 		Price
 	  </div>
 	  <div className="input">
-		<input onChange={handleValueChange} value={price} type="range" min={priceRange.min} max={priceRange.max} step={10}
+		<input onChange={handleValueChange} value={price} type="range" min={priceRange?.min} max={priceRange?.max} step={10}
 			   list="tickmarks"/>
 		<datalist id="tickmarks" className='data-list'>
-		  <option value={priceRange.min} label={priceRange.min?.toString()}>{priceRange.min}</option>
-		  <option value={priceRange.max} label={priceRange.max?.toString()}>{priceRange.max}</option>
+		  <option value={priceRange?.min} label={priceRange?.min?.toString()}>{priceRange?.min}</option>
+		  <option value={priceRange?.max} label={priceRange?.max?.toString()}>{priceRange?.max}</option>
 		</datalist>
 		<input type="text" className='input-value' value={price} disabled/>
 	  </div>
