@@ -1,4 +1,5 @@
-Deploy(https://db-airbnb.vercel.app/).
+[Deploy All](https://db-airbnb.vercel.app/).
+[Deploy Backedn](https://db-airbnb-demo.herokuapp.com/listingsAndReviews).
 
 ### Available Scripts
 
@@ -16,6 +17,6 @@ Runs the backend part of app <br/>
 Open [http://localhost:5000](http://localhost:5000/listingsAndReviews) to view it in the browser.
 
 
-### `git push heroku master`
+#### `git push heroku master`
 
 Push changes to HEROKU REPO.
