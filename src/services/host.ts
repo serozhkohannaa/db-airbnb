@@ -1,0 +1,1 @@
+export const DEPLOY_URL = 'https://db-airbnb-demo.herokuapp.com/listingsAndReviews';

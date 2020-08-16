@@ -5,6 +5,7 @@ import ReviewItem from "../ReviewItem/ReviewItem";
 import NoContent from "../NoContent/NoContent";
 import { getData, postData } from "../../services/request";
 import { connect } from 'react-redux';
+import { DEPLOY_URL } from "../../services/host";
 
 import { getTypes, getCancellationPolicy, setLoader } from "../../action/actions";
 import { FiltersInterface } from "../../constants/filters.interface";
@@ -25,11 +26,11 @@ const Content: FC<Props> = ({isOpen, getTypes, getCancellationPolicy, setLoader,
   const [priceRange, setPriceRange] = useState({min: 0, max: 10000});
 
   useEffect(() => {
-	getData('http://localhost:5000/listingsAndReviews')
+	getData(DEPLOY_URL)
 	  .then(data => setData(data));
-	getData('http://localhost:5000/listingsAndReviews/sort/priceMin')
+	getData(`${DEPLOY_URL}/sort/priceMin`)
 	  .then(priceMin => setPriceRange(priceRange.min = priceMin));
-	getData('http://localhost:5000/listingsAndReviews/sort/priceMax')
+	getData(`${DEPLOY_URL}/sort/priceMax`)
 	  .then(priceMax => setPriceRange({...priceRange, max: priceMax}));
 
 	getTypes();
@@ -38,7 +39,7 @@ const Content: FC<Props> = ({isOpen, getTypes, getCancellationPolicy, setLoader,
 
   const updateList = (type: string) => {
 	setLoader(true);
-	getData(`http://localhost:5000/listingsAndReviews/sort/${type}`)
+	getData(`${DEPLOY_URL}/sort/${type}`)
 	  .then(data => {
 		setLoader(false);
 		setData(data);
@@ -48,7 +49,7 @@ const Content: FC<Props> = ({isOpen, getTypes, getCancellationPolicy, setLoader,
   const refreshList = () => {
 	setLoader(true);
 
-	getData('http://localhost:5000/listingsAndReviews')
+	getData(`${DEPLOY_URL}`)
 	  .then(data => {
 		setLoader(false);
 		setData(data)
@@ -58,7 +59,7 @@ const Content: FC<Props> = ({isOpen, getTypes, getCancellationPolicy, setLoader,
   const searchRecord = (searchValue: string) => {
 	setLoader(true);
 
-	getData(`http://localhost:5000/listingsAndReviews/search/${searchValue}`)
+	getData(`${DEPLOY_URL}/search/${searchValue}`)
 	  .then(data => {
 		setLoader(false);
 		setData(data)
@@ -69,7 +70,7 @@ const Content: FC<Props> = ({isOpen, getTypes, getCancellationPolicy, setLoader,
 	const {price, property_type, cancellation_policy, isHighScored} = params;
 	setLoader(true);
 
-	getData(`http://localhost:5000/listingsAndReviews/filter/${price}&${property_type}&${cancellation_policy}&${isHighScored}`,)
+	getData(`${DEPLOY_URL}/filter/${price}&${property_type}&${cancellation_policy}&${isHighScored}`,)
 	  .then(data => {
 		setLoader(false);
 		setData(data)
@@ -77,15 +78,15 @@ const Content: FC<Props> = ({isOpen, getTypes, getCancellationPolicy, setLoader,
   }
 
   const setCommentUpdate = (item) => {
-	postData(`http://localhost:5000/listingsandreviews/update/${item.listing_id}`, item)
+	postData(`${DEPLOY_URL}/update/${item.listing_id}`, item)
 	  .then(res => refreshList())
 	  .catch(err => console.log(err, 'Can not perform update operation'))
   }
 
   const setDelete = (item) => {
-	postData(`http://localhost:5000/listingsandreviews/deleteComment/${item.listing_id}`, item)
+	postData(`${DEPLOY_URL}/deleteComment/${item.listing_id}`, item)
 	  .then(res => refreshList())
-	  .catch(err => console.log(err, 'Can not perform update operation'))
+	  .catch(err => console.log(err, 'Can not perform delete operation'))
   }
 
   const renderData = () => {
