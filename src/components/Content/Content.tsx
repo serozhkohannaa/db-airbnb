@@ -1,7 +1,6 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState, Suspense } from 'react';
 import './Content.scss';
 import NavParams from "../NavParams/NavParams";
-import ReviewItem from "../ReviewItem/ReviewItem";
 import NoContent from "../NoContent/NoContent";
 import { getData, postData } from "../../services/request";
 import { connect } from 'react-redux';
@@ -12,6 +11,8 @@ import { FiltersInterface } from "../../constants/filters.interface";
 
 import Filters from "../Filters/Filters";
 import Loader from "../Loader/Loader";
+
+const ReviewItem = React.lazy(() => import("../ReviewItem/ReviewItem"));
 
 interface Props {
   isOpen: boolean;
@@ -91,10 +92,12 @@ const Content: FC<Props> = ({isOpen, getTypes, getCancellationPolicy, setLoader,
 
   const renderData = () => {
 	if (data?.length > 0) {
-	  return data.map((item: any, i) => {
-		return <ReviewItem getCommentAndDelete={setDelete} getNewComment={setCommentUpdate} key={i} review={item}/>
-	  })
-	} else return <NoContent refreshSearch={refreshList} />
+	  return <Suspense fallback={<Loader/>}>
+		{data.map((item: any, i) => {
+		  return <ReviewItem getCommentAndDelete={setDelete} getNewComment={setCommentUpdate} key={i} review={item}/>
+		})}
+	  </Suspense>
+	} else return <NoContent refreshSearch={refreshList}/>
   }
 
 
