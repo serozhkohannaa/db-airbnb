@@ -124,7 +124,7 @@ const Filters: FC<Props> = ({ typeValue, policyValue, setFilter, priceRange, pro
 
 const mapStateToProps = ({params}) => {
   return {
-	propertyTypes: params.propertyTypes,
+	propertyTypes: params.property_type,
 	cancellation_policy: params.cancellation_policy
   }
 }
