@@ -1,4 +1,4 @@
-import { GET_TYPES, GET_CANCELLATION_POLICY, SET_MAX_PRICE } from "../constants/action-types";
+import { GET_TYPES, GET_CANCELLATION_POLICY, SET_MAX_PRICE, SET_SORT } from "../constants/action-types";
 import { ParamsInterfaces } from "../constants/params.interfaces";
 
 const initialState: ParamsInterfaces = {
@@ -6,7 +6,7 @@ const initialState: ParamsInterfaces = {
   cancellation_policy: [],
   price: 0,
   isHighScored: false,
-  sortType: 'reviews'
+  sortPrice: 1
 }
 
 export default function params(state = initialState, action) {
@@ -26,6 +26,12 @@ export default function params(state = initialState, action) {
 	  return {
 	    ...state,
 		price: action.payload
+	  }
+
+	case SET_SORT:
+	  return  {
+	    ...state,
+		sortPrice: action.payload
 	  }
   }
   return state;
