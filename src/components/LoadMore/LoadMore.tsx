@@ -5,9 +5,6 @@ import { connect } from "react-redux";
 
 interface Props {
   loadMore: Function;
-  // loadedAmount?: number;
-  // maxLimit?: number;
-  // totalItems?: number
 }
 
 const LoadMore: FC<Props> = ({loadMore}) => {
