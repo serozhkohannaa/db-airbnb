@@ -118,8 +118,13 @@ const Content: FC<Props> = ({isOpen, getTypes, getCancellationPolicy, setLoader,
   }
 
   const setMore = () => {
+	setLoader(true);
+
 	getData(`http://localhost:5000/listingsAndReviews/loadMore`,)
-	  .then(data => refreshList());
+	  .then(data => {
+		setLoader(false);
+		setData(data)
+	  });
   }
 
 
