@@ -1,4 +1,4 @@
-import { SET_FILTERS_OPEN, GET_TYPES, GET_CANCELLATION_POLICY, SET_LOADER } from "../constants/action-types";
+import { SET_FILTERS_OPEN, GET_TYPES, GET_CANCELLATION_POLICY, SET_LOADER, SET_MAX_PRICE } from "../constants/action-types";
 import axios from 'axios';
 import { DEPLOY_URL } from "../services/host";
 
@@ -36,6 +36,11 @@ export const getCancellationPolicy = () => {
 
 export const setLoader = payload => ({
   type: SET_LOADER,
+  payload
+})
+
+export const setMaxPrice = payload => ({
+  type: SET_MAX_PRICE,
   payload
 })
 

@@ -5,12 +5,14 @@ import NoContent from "../NoContent/NoContent";
 import { getData, postData } from "../../services/request";
 import { connect } from 'react-redux';
 import { DEPLOY_URL } from "../../services/host";
+import LoadMore from "../LoadMore/LoadMore";
 
-import { getTypes, getCancellationPolicy, setLoader } from "../../action/actions";
+import { getTypes, getCancellationPolicy, setLoader, setMaxPrice } from "../../action/actions";
 import { FiltersInterface } from "../../constants/filters.interface";
 
 import Filters from "../Filters/Filters";
 import Loader from "../Loader/Loader";
+import { ParamsInterfaces } from "../../constants/params.interfaces";
 
 const ReviewItem = React.lazy(() => import("../ReviewItem/ReviewItem"));
 
@@ -19,31 +21,41 @@ interface Props {
   getTypes: Function;
   getCancellationPolicy: Function;
   setLoader: Function;
-  hasLoader: boolean
+  hasLoader: boolean;
+  defaultParams: ParamsInterfaces,
+  setMaxPrice: Function
 }
 
-const Content: FC<Props> = ({isOpen, getTypes, getCancellationPolicy, setLoader, hasLoader}) => {
+const Content: FC<Props> = ({isOpen, getTypes, getCancellationPolicy, setLoader, hasLoader, defaultParams, setMaxPrice}) => {
   const [data, setData] = useState([]);
   const [priceRange, setPriceRange] = useState({min: 0, max: 10000});
 
   useEffect(() => {
 	getData(DEPLOY_URL)
-	  .then(data => setData(data));
+	  .then(data => {
+		setData(data);
+	  });
 	getData(`${DEPLOY_URL}/sort/priceMin`)
 	  .then(priceMin => setPriceRange(priceRange.min = priceMin));
 	getData(`${DEPLOY_URL}/sort/priceMax`)
-	  .then(priceMax => setPriceRange({...priceRange, max: priceMax}));
+	  .then(priceMax => {
+		setPriceRange({...priceRange, max: priceMax});
+		setMaxPrice(priceMax);
+	  });
 
 	getTypes();
 	getCancellationPolicy();
   }, [])
 
   const updateList = (type: string) => {
+    const {price, property_type, cancellation_policy, isHighScored} = defaultParams;
 	setLoader(true);
-	getData(`${DEPLOY_URL}/sort/${type}`)
+	console.log(defaultParams, 'params price');
+
+	getData(`${DEPLOY_URL}/filter/${price}&${property_type}&${cancellation_policy}&${isHighScored}&reviews`,)
 	  .then(data => {
 		setLoader(false);
-		setData(data);
+		setData(data)
 	  });
   }
 
@@ -67,15 +79,20 @@ const Content: FC<Props> = ({isOpen, getTypes, getCancellationPolicy, setLoader,
 	  });
   }
 
-  const updateFilter = (params: FiltersInterface) => {
-	const {price, property_type, cancellation_policy, isHighScored} = params;
+  const updateFilter = (params: FiltersInterface, sortType = defaultParams.sortType) => {
+	const {price, property_type, cancellation_policy, isHighScored} = params || defaultParams;
 	setLoader(true);
+	console.log(defaultParams, 'params price');
 
-	getData(`${DEPLOY_URL}/filter/${price}&${property_type}&${cancellation_policy}&${isHighScored}`,)
+	getData(`${DEPLOY_URL}/filter/${price}&${property_type}&${cancellation_policy}&${isHighScored}&reviews`,)
 	  .then(data => {
 		setLoader(false);
 		setData(data)
 	  });
+  }
+
+  const updateRecords = () => {
+
   }
 
   const setCommentUpdate = (item) => {
@@ -100,6 +117,11 @@ const Content: FC<Props> = ({isOpen, getTypes, getCancellationPolicy, setLoader,
 	} else return <NoContent refreshSearch={refreshList}/>
   }
 
+  const setMore = () => {
+	getData(`http://localhost:5000/listingsAndReviews/loadMore`,)
+	  .then(data => refreshList());
+  }
+
 
   return <section className='content'>
 	<NavParams total={data?.length} setUpdate={updateList} setSearchRecord={searchRecord} setRefresh={refreshList}/>
@@ -110,20 +132,25 @@ const Content: FC<Props> = ({isOpen, getTypes, getCancellationPolicy, setLoader,
 	  {renderData()}
 	</div>
 	{hasLoader && <div className='loader-wrapper'><Loader/></div>}
+	<div className="content-more">
+	  <LoadMore loadMore={setMore}/>
+	</div>
   </section>
 }
 
-const mapStateToProps = ({application}) => {
+const mapStateToProps = ({application, params}) => {
   return {
 	isOpen: application.isOpen,
-	hasLoader: application.hasLoader
+	hasLoader: application.hasLoader,
+	defaultParams: params
   }
 }
 
 const mapDispatchToProps = {
   getTypes,
   getCancellationPolicy,
-  setLoader
+  setLoader,
+  setMaxPrice
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Content);
