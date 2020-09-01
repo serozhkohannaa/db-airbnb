@@ -48,11 +48,10 @@ const Content: FC<Props> = ({isOpen, getTypes, getCancellationPolicy, setLoader,
   }, [])
 
   const updateList = (type: string) => {
-    const {price, property_type, cancellation_policy, isHighScored} = defaultParams;
+    const {price, property_type, cancellation_policy, isHighScored, sortPrice} = defaultParams;
 	setLoader(true);
-	console.log(defaultParams, 'params price');
 
-	getData(`${DEPLOY_URL}/filter/${price}&${property_type}&${cancellation_policy}&${isHighScored}&reviews`,)
+	getData(`${DEPLOY_URL}/filter/${price}&${property_type}&${cancellation_policy}&${isHighScored}&${sortPrice}`,)
 	  .then(data => {
 		setLoader(false);
 		setData(data)
@@ -79,12 +78,11 @@ const Content: FC<Props> = ({isOpen, getTypes, getCancellationPolicy, setLoader,
 	  });
   }
 
-  const updateFilter = (params: FiltersInterface, sortType = defaultParams.sortType) => {
+  const updateFilter = (params: FiltersInterface, sortPrice = defaultParams.sortPrice) => {
 	const {price, property_type, cancellation_policy, isHighScored} = params || defaultParams;
 	setLoader(true);
-	console.log(defaultParams, 'params price');
 
-	getData(`${DEPLOY_URL}/filter/${price}&${property_type}&${cancellation_policy}&${isHighScored}&reviews`,)
+	getData(`${DEPLOY_URL}/filter/${price}&${property_type}&${cancellation_policy}&${isHighScored}&${1}`,)
 	  .then(data => {
 		setLoader(false);
 		setData(data)
@@ -118,8 +116,13 @@ const Content: FC<Props> = ({isOpen, getTypes, getCancellationPolicy, setLoader,
   }
 
   const setMore = () => {
+	setLoader(true);
+
 	getData(`http://localhost:5000/listingsAndReviews/loadMore`,)
-	  .then(data => refreshList());
+	  .then(data => {
+		setLoader(false);
+		setData(data)
+	  });
   }
 
 

@@ -3,7 +3,7 @@ interface paramI {
   cancellation_type: string;
   price: number;
   isHighScored: boolean;
-  sortType: string;
+  sortPrice: number;
 }
 
 export interface ParamsInterfaces {
@@ -11,5 +11,5 @@ export interface ParamsInterfaces {
   cancellation_policy: Array<paramI>;
   price: number;
   readonly isHighScored: boolean;
-  readonly sortType: string;
+  sortPrice: number;
 }
