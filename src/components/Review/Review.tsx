@@ -21,17 +21,17 @@ const Review: FC<Props> = ({review, getReviewToDelete}) => {
 		<img src={UserIcon} alt="user-pic"/>
 	  </div>
 	  <div className="comment-info">
-		<div className="title">
+		<div className="title" data-testid='user-name'>
 		  {reviewer_name}
 		</div>
-		<div className="subtitle">
+		<div className="subtitle" data-testid='user-date'>
 		  {dateFormatted}
 		</div>
 	  </div>
 	</div>
 	<div className="review-item-body">
 	  <div className="comment-text">
-		<p>{comments}</p>
+		<p data-testid='user-comments'>{comments}</p>
 	  </div>
 	</div>
 	{reviewer_id === '1001' && <button className="btn delete-btn" onClick={() => getReviewToDelete(review)}>

@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`matches snapshot 1`] = `
+<section
+  className="hero"
+>
+  <div
+    className="container"
+  >
+    <div
+      className="hero-text"
+    >
+      <h1
+        className="headline"
+        data-testid="hero-text"
+      >
+        Airbnb listenings and reviews
+      </h1>
+    </div>
+    <div
+      className="hero-img"
+    >
+      img
+    </div>
+  </div>
+</section>
+`;
