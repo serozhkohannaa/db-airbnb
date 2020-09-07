@@ -4,7 +4,7 @@ import '@testing-library/jest-dom/extend-expect'
 import { render, cleanup } from '@testing-library/react'
 import Hero from "./Hero";
 
-afterEach(cleanup);
+// afterEach(cleanup);
 
 it('renders headline', () => {
   const section = document.createElement("section");
