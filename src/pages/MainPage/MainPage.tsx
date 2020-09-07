@@ -6,7 +6,7 @@ import Content from "../../components/Content/Content";
 
 const MainPage = () => {
   return <main id='main'>
-	<Hero/>
+	<Hero heroText='Airbnb listenings and reviews'/>
 	<div className="container">
 	  <Content/>
 	</div>
