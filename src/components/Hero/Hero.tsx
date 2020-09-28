@@ -14,7 +14,6 @@ const Hero: FC<Props> = ({heroText}) => {
 		</h1>
 	  </div>
 	  <div className="hero-img">
-		img
 	  </div>
 	</div>
   </section>
