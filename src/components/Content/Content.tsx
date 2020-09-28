@@ -118,7 +118,7 @@ const Content: FC<Props> = ({isOpen, getTypes, getCancellationPolicy, setLoader,
   const setMore = () => {
 	setLoader(true);
 
-	getData(`http://localhost:5000/listingsAndReviews/loadMore`,)
+	getData(`${DEPLOY_URL}/loadMore`,)
 	  .then(data => {
 		setLoader(false);
 		setData(data)
