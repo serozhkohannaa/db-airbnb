@@ -1,20 +1,36 @@
 const router = require('express').Router();
 const ListingsAndReviews = require('../models/reviews.model');
 
+const nPerPage = 10;
+let currentPage = 1;
+
+router.route('/loadMore').get((req, res) => {
+	currentPage = currentPage + 1;
+	ListingsAndReviews.find()
+		.sort({price: 1})
+		.limit(nPerPage * currentPage)
+		.then(review => res.json(review))
+		.catch(err => res.status(400).json('Error: ' + err));
+});
+
 router.route('/').get((req, res) => {
 	ListingsAndReviews.find()
+		.sort({price: 1})
+		.limit(nPerPage * currentPage)
 		.then(review => res.json(review))
 		.catch(err => res.status(400).json('Error: ' + err));
 });
 
 router.route('/sort/reviews').get((req, res) => {
 	ListingsAndReviews.find().sort({number_of_reviews: -1})
+		.limit(nPerPage * currentPage)
 		.then(review => res.json(review))
 		.catch(err => res.status(400).json('Error: ' + err));
 });
 
 router.route('/sort/price').get((req, res) => {
 	ListingsAndReviews.find().sort({price: 1})
+		.limit(nPerPage * currentPage)
 		.then(review => res.json(review))
 		.catch(err => res.status(400).json('Error: ' + err));
 });
@@ -45,11 +61,12 @@ router.route('/get/cancellation_policy').get((req, res) => {
 
 router.route('/search/:name').get((req, res) => {
 	ListingsAndReviews.find({ $text: {$search: req.params.name }})
+		.limit(nPerPage * currentPage)
 		.then(review => res.json(review))
 		.catch(err => res.status(400).json('Error: ' + err));
 });
 
-router.route('/filter/:price&:property_type&:cancellation_policy&:review_scores_value').get((req, res) => {
+router.route('/filter/:price&:property_type&:cancellation_policy&:review_scores_value&:sortPrice').get((req, res) => {
 	let highScoreValue = req.params.review_scores_value == true ? 8 : 1;
 
 	ListingsAndReviews.find({
@@ -58,6 +75,8 @@ router.route('/filter/:price&:property_type&:cancellation_policy&:review_scores_
 		cancellation_policy: req.params.cancellation_policy.split(','),
 		"review_scores.review_scores_value": {$gt: highScoreValue}
 	})
+		.sort({price: req.params.sortPrice})
+		.limit(nPerPage * currentPage)
 		.then(review => res.json(review))
 		.catch(err => res.status(400).json('Error: ' + err));
 });

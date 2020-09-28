@@ -89,10 +89,6 @@ const Content: FC<Props> = ({isOpen, getTypes, getCancellationPolicy, setLoader,
 	  });
   }
 
-  const updateRecords = () => {
-
-  }
-
   const setCommentUpdate = (item) => {
 	postData(`${DEPLOY_URL}/update/${item.listing_id}`, item)
 	  .then(res => refreshList())
@@ -118,7 +114,7 @@ const Content: FC<Props> = ({isOpen, getTypes, getCancellationPolicy, setLoader,
   const setMore = () => {
 	setLoader(true);
 
-	getData(`http://localhost:5000/listingsAndReviews/loadMore`,)
+	getData(`${DEPLOY_URL}/loadMore`,)
 	  .then(data => {
 		setLoader(false);
 		setData(data)
